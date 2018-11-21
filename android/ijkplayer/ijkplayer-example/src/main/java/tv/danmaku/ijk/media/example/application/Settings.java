@@ -54,17 +54,17 @@ public class Settings {
 
     public boolean getUsingMediaCodec() {
         String key = mAppContext.getString(R.string.pref_key_using_media_codec);
-        return mSharedPreferences.getBoolean(key, false);
+        return mSharedPreferences.getBoolean(key, true);
     }
 
     public boolean getUsingMediaCodecAutoRotate() {
         String key = mAppContext.getString(R.string.pref_key_using_media_codec_auto_rotate);
-        return mSharedPreferences.getBoolean(key, false);
+        return mSharedPreferences.getBoolean(key, true);
     }
 
     public boolean getMediaCodecHandleResolutionChange() {
         String key = mAppContext.getString(R.string.pref_key_media_codec_handle_resolution_change);
-        return mSharedPreferences.getBoolean(key, false);
+        return mSharedPreferences.getBoolean(key, true);
     }
 
     public boolean getUsingOpenSLES() {

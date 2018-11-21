@@ -122,19 +122,19 @@ public class InfoHudViewHolder {
                     int vdec = mp.getVideoDecoder();
                     switch (vdec) {
                         case IjkMediaPlayer.FFP_PROPV_DECODER_AVCODEC:
-                            setRowValue(R.string.vdec, "avcodec");
+                            //setRowValue(R.string.vdec, "avcodec");
                             break;
                         case IjkMediaPlayer.FFP_PROPV_DECODER_MEDIACODEC:
-                            setRowValue(R.string.vdec, "MediaCodec");
+                            //setRowValue(R.string.vdec, "MediaCodec");
                             break;
                         default:
-                            setRowValue(R.string.vdec, "");
+                            //setRowValue(R.string.vdec, "");
                             break;
                     }
 
                     float fpsOutput = mp.getVideoOutputFramesPerSecond();
                     float fpsDecode = mp.getVideoDecodeFramesPerSecond();
-                    setRowValue(R.string.fps, String.format(Locale.US, "%.2f / %.2f", fpsDecode, fpsOutput));
+                    //setRowValue(R.string.fps, String.format(Locale.US, "%.2f / %.2f", fpsDecode, fpsOutput));
 
                     long videoCachedDuration = mp.getVideoCachedDuration();
                     long audioCachedDuration = mp.getAudioCachedDuration();
@@ -144,13 +144,13 @@ public class InfoHudViewHolder {
                     long bitRate             = mp.getBitRate();
                     long seekLoadDuration    = mp.getSeekLoadDuration();
 
-                    setRowValue(R.string.v_cache, String.format(Locale.US, "%s, %s", formatedDurationMilli(videoCachedDuration), formatedSize(videoCachedBytes)));
-                    setRowValue(R.string.a_cache, String.format(Locale.US, "%s, %s", formatedDurationMilli(audioCachedDuration), formatedSize(audioCachedBytes)));
-                    setRowValue(R.string.load_cost, String.format(Locale.US, "%d ms", mLoadCost));
-                    setRowValue(R.string.seek_cost, String.format(Locale.US, "%d ms", mSeekCost));
-                    setRowValue(R.string.seek_load_cost, String.format(Locale.US, "%d ms", seekLoadDuration));
-                    setRowValue(R.string.tcp_speed, String.format(Locale.US, "%s", formatedSpeed(tcpSpeed, 1000)));
-                    setRowValue(R.string.bit_rate, String.format(Locale.US, "%.2f kbs", bitRate/1000f));
+                    //setRowValue(R.string.v_cache, String.format(Locale.US, "%s, %s", formatedDurationMilli(videoCachedDuration), formatedSize(videoCachedBytes)));
+                    //setRowValue(R.string.a_cache, String.format(Locale.US, "%s, %s", formatedDurationMilli(audioCachedDuration), formatedSize(audioCachedBytes)));
+                    //setRowValue(R.string.load_cost, String.format(Locale.US, "%d ms", mLoadCost));
+                    //setRowValue(R.string.seek_cost, String.format(Locale.US, "%d ms", mSeekCost));
+                    //setRowValue(R.string.seek_load_cost, String.format(Locale.US, "%d ms", seekLoadDuration));
+                    //setRowValue(R.string.tcp_speed, String.format(Locale.US, "%s", formatedSpeed(tcpSpeed, 1000)));
+                    //setRowValue(R.string.bit_rate, String.format(Locale.US, "%.2f kbs", bitRate/1000f));
 
                     mHandler.removeMessages(MSG_UPDATE_HUD);
                     mHandler.sendEmptyMessageDelayed(MSG_UPDATE_HUD, 500);
