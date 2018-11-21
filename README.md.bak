@@ -140,7 +140,7 @@ cd ijkplayer-android
 git checkout -B latest k0.8.8
 
 
-#注意在ubuntu下，主要用sh init-android.sh来执行，会报错。
+#注意，主要用sh init-android.sh来执行，会报错。
 ./init-android.sh
 
 cd android/contrib
