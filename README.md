@@ -39,7 +39,7 @@ dependencies {
 
 ### My Build Environment
 - Common
- - Mac OS X 10.11.5
+ - Mac OS X 10.11.5  经测试，在centos 7和ubunti 1610 1804 下，都编译通过。
 - Android
  - [NDK r10e] https://dl.google.com/android/repository/android-ndk-r10e-linux-x86_64.zip (http://developer.android.com/tools/sdk/ndk/index.html)
  - Android Studio 2.1.3  (可以用android studio 3.x打开工程)
