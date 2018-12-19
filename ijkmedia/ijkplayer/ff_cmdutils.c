@@ -157,7 +157,8 @@ AVDictionary *filter_codec_opts(AVDictionary *opts, enum AVCodecID codec_id,
     }
 
     while ((t = av_dict_get(opts, "", t, AV_DICT_IGNORE_SUFFIX))) {
-        char *p = strchr(t->key, ':');
+		av_log(NULL, AV_LOG_DEBUG, "filter_codec_opts: codec_type=[%d] [%s]=[%s]", st->codecpar->codec_type, t->key, t->value);
+		char *p = strchr(t->key, ':');
 
         /* check stream specification in opt name */
         if (p)
