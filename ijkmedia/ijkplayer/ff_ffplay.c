@@ -3085,14 +3085,7 @@ static int read_thread(void *arg)
 	test_ffp_print_dictory(ffp->swr_opts, "swr_opts");
 	test_ffp_print_dictory(ffp->player_opts, "player_opts");
 	test_ffp_print_dictory(ffp->swr_preset_opts, "swr_preset_opts");
-/*
-	    AVDictionary *format_opts;
-    AVDictionary *codec_opts;
-    AVDictionary *sws_dict;
-    AVDictionary *player_opts;
-    AVDictionary *swr_opts;
-    AVDictionary *swr_preset_opts;
-*/
+
     if (!wait_mutex) {
         av_log(NULL, AV_LOG_FATAL, "SDL_CreateMutex(): %s\n", SDL_GetError());
         ret = AVERROR(ENOMEM);
@@ -3160,6 +3153,14 @@ static int read_thread(void *arg)
     //int orig_nb_streams;
     //opts = setup_find_stream_info_opts(ic, ffp->codec_opts);
     //orig_nb_streams = ic->nb_streams;
+	av_log(NULL, AV_LOG_DEBUG, "****************************************************");
+	test_ffp_print_dictory(ffp->format_opts, "format_opts");
+	test_ffp_print_dictory(ffp->codec_opts, "codec_opts");
+	test_ffp_print_dictory(ffp->sws_dict, "sws_dict");
+	test_ffp_print_dictory(ffp->swr_opts, "swr_opts");
+	test_ffp_print_dictory(ffp->player_opts, "player_opts");
+	test_ffp_print_dictory(ffp->swr_preset_opts, "swr_preset_opts");	
+	av_log(NULL, AV_LOG_DEBUG, "****************************************************");
 
 	av_log(NULL, AV_LOG_ERROR, "********** read_thread find_stream_info[%d] (%s:%d)", (int)gettid(), __FILE__, __LINE__);
     if (ffp->find_stream_info) {
