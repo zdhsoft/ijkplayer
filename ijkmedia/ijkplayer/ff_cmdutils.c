@@ -262,7 +262,7 @@ void test_ffp_print_dictory(AVDictionary * paramDict, const char * paramPrompt) 
 		}
 	}
 	else {
-		av_log(NULL, AV_LOG_DEBUG, "%s dictory is NULL ", paramPrompt)
+		av_log(NULL, AV_LOG_DEBUG, "%s dictory is NULL ", paramPrompt);
 	}
 	av_log(NULL, AV_LOG_DEBUG, "------test_ffp_print_dictory-----%s end-----", paramPrompt);
 }
