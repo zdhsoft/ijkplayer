@@ -3056,10 +3056,10 @@ static int is_realtime(AVFormatContext *s)
         return 1;
     return 0;
 }
-
 /* this thread gets the stream from the disk or the network */
 static int read_thread(void *arg)
 {
+	av_log(NULL, AV_LOG_ERROR, "********** read_thread start===>thread id=[%d]", (int)gettid());
     FFPlayer *ffp = arg;
     VideoState *is = ffp->is;
     AVFormatContext *ic = NULL;
@@ -3146,14 +3146,23 @@ static int read_thread(void *arg)
     //opts = setup_find_stream_info_opts(ic, ffp->codec_opts);
     //orig_nb_streams = ic->nb_streams;
 
-
+	av_log(NULL, AV_LOG_ERROR, "********** read_thread find_stream_info[%d] (%s:%d)", (int)gettid(), __FILE__, __LINE__);
     if (ffp->find_stream_info) {
+		av_log(NULL, AV_LOG_ERROR, "********** ffp->find_stream_info (%s:%d)", __FILE__, __LINE__);
         AVDictionary **opts = setup_find_stream_info_opts(ic, ffp->codec_opts);
         int orig_nb_streams = ic->nb_streams;
+		av_log(NULL, AV_LOG_ERROR, "********** orig_nb_streams = %d (%s:%d)", orig_nb_streams,  __FILE__, __LINE__);
 
         do {
             if (av_stristart(is->filename, "data:", NULL) && orig_nb_streams > 0) {
+				av_log(NULL, AV_LOG_ERROR, "********** (av_stristart(is->filename, data:, NULL) && orig_nb_streams > 0) { (%s:%d)",  __FILE__, __LINE__);
                 for (i = 0; i < orig_nb_streams; i++) {
+					if(ic->streams[i] && ic->streams[i]->codecpar) {
+						av_log(NULL, AV_LOG_ERROR, "********** stream[%d] codec_type=%d, codec_id=%d  (%s:%d)", i, ic->streams[i]->codecpar->codec_type, ic->streams[i]->codecpar->codec_id, __FILE__, __LINE__);
+					}
+					else {
+						av_log(NULL, AV_LOG_ERROR, "********** stream[%d]  streams->%d, (%s:%d)", i, (int)ic->streams[i], __FILE__, __LINE__);
+					}
                     if (!ic->streams[i] || !ic->streams[i]->codecpar || ic->streams[i]->codecpar->profile == FF_PROFILE_UNKNOWN) {
                         break;
                     }
@@ -3163,8 +3172,11 @@ static int read_thread(void *arg)
                     break;
                 }
             }
+			av_log(NULL, AV_LOG_ERROR, "********** avformat_find_stream_info(ic, opts) begin (%s:%d)", __FILE__, __LINE__);
             err = avformat_find_stream_info(ic, opts);
+			av_log(NULL, AV_LOG_ERROR, "********** avformat_find_stream_info(ic, opts) end (%s:%d)", __FILE__, __LINE__);
         } while(0);
+		av_log(NULL, AV_LOG_ERROR, "********** ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO); (%s:%d)", __FILE__, __LINE__);
         ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO);
 
         for (i = 0; i < orig_nb_streams; i++)
@@ -3178,6 +3190,9 @@ static int read_thread(void *arg)
             goto fail;
         }
     }
+	else {
+		av_log(NULL, AV_LOG_ERROR, "********** not found stream info (%s:%d)",  __FILE__, __LINE__);
+	}
     if (ic->pb)
         ic->pb->eof_reached = 0; // FIXME hack, ffplay maybe should not use avio_feof() to test for the end
 
@@ -3194,6 +3209,8 @@ static int read_thread(void *arg)
 
 #endif
     /* if seeking requested, we execute it */
+	av_log(NULL, AV_LOG_ERROR, "********** ffp->start_time != AV_NOPTS_VALUE (%s:%d)", __FILE__, __LINE__);
+
     if (ffp->start_time != AV_NOPTS_VALUE) {
         int64_t timestamp;
 
@@ -3975,10 +3992,15 @@ static const char *ijk_version_info()
     return IJKPLAYER_VERSION;
 }
 
+static const char * zdhsoft_version_info() {
+	return ZDHSOFT_VERSION;
+}
+
 FFPlayer *ffp_create()
 {
     av_log(NULL, AV_LOG_INFO, "av_version_info: %s\n", av_version_info());
     av_log(NULL, AV_LOG_INFO, "ijk_version_info: %s\n", ijk_version_info());
+	av_log(NULL, AV_LOG_INFO, "dsv_version_info:%s\n", zdhsoft_version_info());
 
     FFPlayer* ffp = (FFPlayer*) av_mallocz(sizeof(FFPlayer));
     if (!ffp)
@@ -4269,6 +4291,7 @@ int ffp_prepare_async_l(FFPlayer *ffp, const char *file_name)
     }
 
     av_log(NULL, AV_LOG_INFO, "===== versions =====\n");
+    ffp_show_version_str(ffp, "dsvversion",     zdhsoft_version_info());
     ffp_show_version_str(ffp, "ijkplayer",      ijk_version_info());
     ffp_show_version_str(ffp, "FFmpeg",         av_version_info());
     ffp_show_version_int(ffp, "libavutil",      avutil_version());
