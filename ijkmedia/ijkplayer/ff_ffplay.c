@@ -3057,6 +3057,7 @@ static int is_realtime(AVFormatContext *s)
     return 0;
 }
 /* this thread gets the stream from the disk or the network */
+#define MAX_ENTRY_COUNT 10
 static int read_thread(void *arg)
 {
 	av_log(NULL, AV_LOG_ERROR, "********** read_thread start===>thread id=[%d]", (int)gettid());
@@ -3077,7 +3078,16 @@ static int read_thread(void *arg)
     int64_t prev_io_tick_counter = 0;
     int64_t io_tick_counter = 0;
     int init_ijkmeta = 0;
+	int program_type = -1;
 
+	int nEntryCount = 0;
+	//初始化数组
+	AVDictionaryEntry * entryList[MAX_ENTRY_COUNT];
+	entryList[nEntryCount++] = av_dict_get(ffp->player_opts, "program-type", t, AV_DICT_IGNORE_SUFFIX);
+	
+	
+	
+	
 
 	test_ffp_print_dictory(ffp->format_opts, "format_opts");
 	test_ffp_print_dictory(ffp->codec_opts, "codec_opts");
@@ -3117,6 +3127,7 @@ static int read_thread(void *arg)
         av_dict_set(&ffp->format_opts, "timeout", NULL, 0);
     }
 
+
     if (ffp->skip_calc_frame_rate) {
         av_dict_set_int(&ic->metadata, "skip-calc-frame-rate", ffp->skip_calc_frame_rate, 0);
         av_dict_set_int(&ffp->format_opts, "skip-calc-frame-rate", ffp->skip_calc_frame_rate, 0);
@@ -3153,19 +3164,21 @@ static int read_thread(void *arg)
     //int orig_nb_streams;
     //opts = setup_find_stream_info_opts(ic, ffp->codec_opts);
     //orig_nb_streams = ic->nb_streams;
-	av_log(NULL, AV_LOG_DEBUG, "****************************************************");
+//	av_log(NULL, AV_LOG_DEBUG, "****************************************************");
+/*
 	test_ffp_print_dictory(ffp->format_opts, "format_opts");
 	test_ffp_print_dictory(ffp->codec_opts, "codec_opts");
 	test_ffp_print_dictory(ffp->sws_dict, "sws_dict");
 	test_ffp_print_dictory(ffp->swr_opts, "swr_opts");
 	test_ffp_print_dictory(ffp->player_opts, "player_opts");
 	test_ffp_print_dictory(ffp->swr_preset_opts, "swr_preset_opts");	
-	av_log(NULL, AV_LOG_DEBUG, "****************************************************");
+*/	
+//	av_log(NULL, AV_LOG_DEBUG, "****************************************************");
 
 	av_log(NULL, AV_LOG_ERROR, "********** read_thread find_stream_info[%d] (%s:%d)", (int)gettid(), __FILE__, __LINE__);
     if (ffp->find_stream_info) {
 		av_log(NULL, AV_LOG_ERROR, "********** ffp->find_stream_info (%s:%d)", __FILE__, __LINE__);
-        AVDictionary **opts = setup_find_stream_info_opts(ic, ffp->codec_opts);
+        AVDictionary **opts = setup_find_stream_info_opts(ic, ffp->codec_opts, nEntryCount, entryList);
         int orig_nb_streams = ic->nb_streams;
 		av_log(NULL, AV_LOG_ERROR, "********** orig_nb_streams = %d (%s:%d)", orig_nb_streams,  __FILE__, __LINE__);
 
@@ -3173,6 +3186,9 @@ static int read_thread(void *arg)
             if (av_stristart(is->filename, "data:", NULL) && orig_nb_streams > 0) {
 				av_log(NULL, AV_LOG_ERROR, "********** (av_stristart(is->filename, data:, NULL) && orig_nb_streams > 0) { (%s:%d)",  __FILE__, __LINE__);
                 for (i = 0; i < orig_nb_streams; i++) {
+					if(opts) {
+						test_ffp_print_dictory(opts[i], "-----");
+					}
 					if(ic->streams[i] && ic->streams[i]->codecpar) {
 						av_log(NULL, AV_LOG_ERROR, "********** stream[%d] codec_type=%d, codec_id=%d  (%s:%d)", i, ic->streams[i]->codecpar->codec_type, ic->streams[i]->codecpar->codec_id, __FILE__, __LINE__);
 					}
