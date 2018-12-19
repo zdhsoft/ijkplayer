@@ -251,3 +251,20 @@ double get_rotation(AVStream *st)
 
     return theta;
 }
+
+
+void test_ffp_print_dictory(AVDictionary * paramDict, const char * paramPrompt) {
+	av_log(NULL, AV_LOG_DEBUG, "------test_ffp_print_dictory-----%s begin-----", paramPrompt);
+	if(paramDict) {
+		AVDictionaryEntry *t = NULL;
+		while ((t = av_dict_get(paramDict, "", t, AV_DICT_IGNORE_SUFFIX))) {
+		    av_log(NULL, AV_LOG_DEBUG, "%s  [%s]=[%s]", paramPrompt, t->key, t->value);
+		}
+	}
+	else {
+		av_log(NULL, AV_LOG_DEBUG, "%s dictory is NULL ", paramPrompt)
+	}
+	av_log(NULL, AV_LOG_DEBUG, "------test_ffp_print_dictory-----%s end-----", paramPrompt);
+}
+
+

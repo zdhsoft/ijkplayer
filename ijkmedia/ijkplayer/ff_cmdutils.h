@@ -49,4 +49,8 @@ void *grow_array(void *array, int elem_size, int *size, int new_size);
 
 double          get_rotation(AVStream *st);
 
+
+void      test_ffp_print_dictory(AVDictionary * paramDict, const char * paramPrompt);
+
+
 #endif

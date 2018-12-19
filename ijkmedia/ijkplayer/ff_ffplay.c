@@ -3078,6 +3078,21 @@ static int read_thread(void *arg)
     int64_t io_tick_counter = 0;
     int init_ijkmeta = 0;
 
+
+	test_ffp_print_dictory(ffp->format_opts, "format_opts");
+	test_ffp_print_dictory(ffp->codec_opts, "codec_opts");
+	test_ffp_print_dictory(ffp->sws_dict, "sws_dict");
+	test_ffp_print_dictory(ffp->swr_opts, "swr_opts");
+	test_ffp_print_dictory(ffp->player_opts, "player_opts");
+	test_ffp_print_dictory(ffp->swr_preset_opts, "swr_preset_opts");
+/*
+	    AVDictionary *format_opts;
+    AVDictionary *codec_opts;
+    AVDictionary *sws_dict;
+    AVDictionary *player_opts;
+    AVDictionary *swr_opts;
+    AVDictionary *swr_preset_opts;
+*/
     if (!wait_mutex) {
         av_log(NULL, AV_LOG_FATAL, "SDL_CreateMutex(): %s\n", SDL_GetError());
         ret = AVERROR(ENOMEM);
@@ -5063,3 +5078,5 @@ IjkMediaMeta *ffp_get_meta_l(FFPlayer *ffp)
 
     return ffp->meta;
 }
+
+
