@@ -203,10 +203,8 @@ AVDictionary **setup_find_stream_info_opts(AVFormatContext *s,
     for (i = 0; i < s->nb_streams; i++) {
         opts[i] = filter_codec_opts(codec_opts, s->streams[i]->codecpar->codec_id,
                                     s, s->streams[i], NULL);
-		AVDictionary * d = opts[i];
 		for(j = 0; j < otherOptsCnt; ++j) {
-			AVDictionaryEntry * p = otheOptsList[j];
-			av_dict_set(&d, p->key, p->value, s, 0)
+			av_dict_set(&opts[i], otheOptsList[j]->key, otheOptsList[j]->value, 0);
 		}
     }
     return opts;
