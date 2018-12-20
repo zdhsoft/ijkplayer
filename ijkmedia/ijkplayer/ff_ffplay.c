@@ -3158,12 +3158,12 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				  //streamVideo->codecpar->ticks_per_frame = 2;
 				  //streamVideo->codecpar->pix_fmt = 0;
 				  streamVideo->pts_wrap_bits = 32;
-				  streamVideo->time_base.den = 1000;
-				  streamVideo->time_base.num = 1;
-				  streamVideo->avg_frame_rate.den = 90;
-				  streamVideo->avg_frame_rate.num = 3;
-				  streamVideo->r_frame_rate.den = 60;
-				  streamVideo->r_frame_rate.num = 2;
+				  streamVideo->time_base.den = 1;
+				  streamVideo->time_base.num = 1000;
+				  streamVideo->avg_frame_rate.den = 3;
+				  streamVideo->avg_frame_rate.num = 75;
+				  streamVideo->r_frame_rate.den = 2;
+				  streamVideo->r_frame_rate.num = 60;
 				  DSVVideoExtradata(ic, video_index);	 
 			}
 			if(streamAudio != NULL) {
@@ -3181,12 +3181,12 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
-				streamVideo->time_base.den = 1000;
-				streamVideo->time_base.num = 1;
-				streamVideo->avg_frame_rate.den = 90;
-				streamVideo->avg_frame_rate.num = 3;
-				streamVideo->r_frame_rate.den = 60;
-				streamVideo->r_frame_rate.num = 2;
+				streamVideo->time_base.den = 1;
+				streamVideo->time_base.num = 1000;
+				streamVideo->avg_frame_rate.den = 3;
+				streamVideo->avg_frame_rate.num = 75;
+				streamVideo->r_frame_rate.den = 2;
+				streamVideo->r_frame_rate.num = 60;
 				DSVVideoExtradata(ic, video_index);	   
 				
 			}
@@ -3201,15 +3201,16 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				//streamVideo->codecpar->ticks_per_frame = 2;
+				
+				ic->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
-				streamVideo->time_base.den = 1000;
-				streamVideo->time_base.num = 1;
-				streamVideo->avg_frame_rate.den = 90;
-				streamVideo->avg_frame_rate.num = 3;
-				streamVideo->r_frame_rate.den = 60;
-				streamVideo->r_frame_rate.num = 2;
+				streamVideo->time_base.den = 1;
+				streamVideo->time_base.num = 1000;
+				streamVideo->avg_frame_rate.den = 3;
+				streamVideo->avg_frame_rate.num = 75;
+				streamVideo->r_frame_rate.den = 2;
+				streamVideo->r_frame_rate.num = 60;
 				//DSVVideoExtradata(ic, video_index);	 				
 			}
 			if(streamAudio != NULL) {
