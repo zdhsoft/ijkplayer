@@ -3155,7 +3155,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 720;
 				streamVideo->codecpar->height = 576;
-				  streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				  //streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				//streamVideo->codecpar->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
@@ -3189,7 +3189,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				//streamVideo->codecpar->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
@@ -3214,7 +3214,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 
 				//ic->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
