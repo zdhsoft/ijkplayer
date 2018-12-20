@@ -3162,8 +3162,8 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				  streamVideo->time_base.num = 1000;
 				  streamVideo->avg_frame_rate.den = 3;
 				  streamVideo->avg_frame_rate.num = 75;
-				  streamVideo->r_frame_rate.den = 2;
-				  streamVideo->r_frame_rate.num = 60;
+				  streamVideo->r_frame_rate.den = 3;
+				  streamVideo->r_frame_rate.num = 75;
 				  DSVVideoExtradata(ic, video_index);	 
 			}
 			if(streamAudio != NULL) {
@@ -3185,8 +3185,8 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->time_base.num = 1000;
 				streamVideo->avg_frame_rate.den = 3;
 				streamVideo->avg_frame_rate.num = 75;
-				streamVideo->r_frame_rate.den = 2;
-				streamVideo->r_frame_rate.num = 60;
+				streamVideo->r_frame_rate.den = 3;
+				streamVideo->r_frame_rate.num = 75;
 				DSVVideoExtradata(ic, video_index);	   
 				
 			}
@@ -3209,8 +3209,8 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->time_base.num = 1000;
 				streamVideo->avg_frame_rate.den = 3;
 				streamVideo->avg_frame_rate.num = 75;
-				streamVideo->r_frame_rate.den = 2;
-				streamVideo->r_frame_rate.num = 60;
+				streamVideo->r_frame_rate.den = 3;
+				streamVideo->r_frame_rate.num = 75;
 				//DSVVideoExtradata(ic, video_index);	 				
 			}
 			if(streamAudio != NULL) {
