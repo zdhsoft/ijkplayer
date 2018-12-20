@@ -29,15 +29,18 @@
 #include "ff_fferror.h"
 #include "ff_ffmsg.h"
 
-/** 额外使用的参数结构 */
 typedef struct TDSVParam {
 	int program_type;
 }TDSVParam;
 
-#define DSV_PROGRAM_TYPE_NONE 	0   //未定义
-#define DSV_PROGRAM_TYPE_NORMAL 1	//普通576*720   H264 or mpeg2
-#define DSV_PROGRAM_TYPE_HIGH 	2   //高清1920*1080 H264
-#define DSV_PROGRAM_TYPE_SUPER 	3   //超清1920*1080 mpeg2
+//unknow
+#define DSV_PROGRAM_TYPE_NONE 	0
+//576*720   H264 or mpeg2
+#define DSV_PROGRAM_TYPE_NORMAL 1
+//1920*1080 H264
+#define DSV_PROGRAM_TYPE_HIGH 	2
+//1920*1080 mpeg2
+#define DSV_PROGRAM_TYPE_SUPER 	3
 
 #define DSV_PROGRAM_TYPE_BEGIN  DSV_PROGRAM_TYPE_NONE
 #define DSV_PROGRAM_TYPE_END    DSV_PROGRAM_TYPE_SUPER
