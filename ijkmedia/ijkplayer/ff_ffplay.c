@@ -3208,6 +3208,16 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				
 			}
 			if(streamAudio != NULL) {
+		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_AC3;
+     			streamAudio->codecpar->sample_rate = 48000;
+				streamAudio->time_base.den = 48000;
+				streamAudio->time_base.num = 1;
+				streamAudio->codecpar->bits_per_coded_sample = 16;
+				streamAudio->codecpar->channels = 2;
+				streamAudio->codecpar->channel_layout = 3;
+				streamAudio->pts_wrap_bits = 32;
+				streamAudio->time_base.den = 1000;
+				streamAudio->time_base.num = 1;				
 			}
 		}
 		break;
