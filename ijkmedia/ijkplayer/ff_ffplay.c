@@ -3081,7 +3081,7 @@ void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
 
 int DSVVideoExtradata(AVFormatContext *s, int video_index)
 {
-   int  type, size, pos;
+   int  type, size;
    int ret = -1;
    int64_t dts;
    bool got_extradata = false;
@@ -3090,7 +3090,7 @@ int DSVVideoExtradata(AVFormatContext *s, int video_index)
       return ret;
  
    for (;; avio_skip(s->pb, 4)) {
-      pos  = avio_tell(s->pb);
+      avio_tell(s->pb);
       type = avio_r8(s->pb);
       size = avio_rb24(s->pb);
       dts  = avio_rb24(s->pb);
@@ -3150,12 +3150,12 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		case DSV_PROGRAM_TYPE_NORMAL: 
 		{
 			if(streamVideo != NULL) {
-				  av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_NORMAL);
+				  av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_NORMAL);
 				  streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				  streamVideo->codecpar->width = 720;
 				  streamVideo->codecpar->height = 576;
-				  streamVideo->codecpar->ticks_per_frame = 2;
-				  streamVideo->codecpar->pix_fmt = 0;
+				  //streamVideo->codecpar->ticks_per_frame = 2;
+				  //streamVideo->codecpar->pix_fmt = 0;
 				  streamVideo->pts_wrap_bits = 32;
 				  streamVideo->time_base.den = 1000;
 				  streamVideo->time_base.num = 1;
@@ -3173,12 +3173,12 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		case DSV_PROGRAM_TYPE_HIGH: 
 		{
 			if(streamVideo != NULL) {
-				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_HIGH);
+				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_HIGH);
 				streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				streamVideo->codecpar->ticks_per_frame = 2;
-				streamVideo->codecpar->pix_fmt = 0;
+				//streamVideo->codecpar->ticks_per_frame = 2;
+				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 1000;
 				streamVideo->time_base.num = 1;
@@ -3196,12 +3196,12 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		case DSV_PROGRAM_TYPE_SUPER: 
 		{
 			if(streamVideo != NULL) {
-				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_SUPER);
+				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_SUPER);
 				streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				streamVideo->codecpar->ticks_per_frame = 2;
-				streamVideo->codecpar->pix_fmt = 0;
+				//streamVideo->codecpar->ticks_per_frame = 2;
+				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 1000;
 				streamVideo->time_base.num = 1;
