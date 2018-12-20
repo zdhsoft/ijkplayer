@@ -3165,14 +3165,16 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.num = 75;
 				streamVideo->r_frame_rate.den = 3;
 				streamVideo->r_frame_rate.num = 75;
+				streamVideo->sample_aspect_ratio.num = 16;
+				streamVideo->sample_aspect_ratio.den = 15;
+				
 
 				DSVVideoExtradata(ic, video_index);	 
 			}
 			if(streamAudio != NULL) {
-				/*
-		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_AAC;
-     			streamAudio->codecpar->sample_rate = 44100;
-				streamAudio->time_base.den = 44100;
+		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_MP2;
+     			streamAudio->codecpar->sample_rate = 48000;
+				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
 				streamAudio->codecpar->bits_per_coded_sample = 16;
 				streamAudio->codecpar->channels = 2;
@@ -3180,7 +3182,6 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
 				streamAudio->time_base.num = 1;
-				*/
 			}
 		}
 		break;
@@ -3201,6 +3202,8 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.num = 75;
 				streamVideo->r_frame_rate.den = 3;
 				streamVideo->r_frame_rate.num = 75;
+				streamVideo->sample_aspect_ratio.num = 16;
+				streamVideo->sample_aspect_ratio.den = 15;				
 				DSVVideoExtradata(ic, video_index);	   
 				
 			}
@@ -3227,6 +3230,8 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.num = 75;
 				streamVideo->r_frame_rate.den = 3;
 				streamVideo->r_frame_rate.num = 75;
+				streamVideo->sample_aspect_ratio.num = 16;
+				streamVideo->sample_aspect_ratio.den = 15;				
 				//DSVVideoExtradata(ic, video_index);	 				
 			}
 			if(streamAudio != NULL) {
