@@ -3202,7 +3202,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
 				
-				ic->ticks_per_frame = 2;
+				//ic->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 1;
