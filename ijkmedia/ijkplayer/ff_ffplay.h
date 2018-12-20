@@ -29,6 +29,20 @@
 #include "ff_fferror.h"
 #include "ff_ffmsg.h"
 
+/** 额外使用的参数结构 */
+typedef struct TDSVParam {
+	int program_type;
+}TDSVParam;
+
+#define DSV_PROGRAM_TYPE_NONE 	0   //未定义
+#define DSV_PROGRAM_TYPE_NORMAL 1	//普通576*720   H264 or mpeg2
+#define DSV_PROGRAM_TYPE_HIGH 	2   //高清1920*1080 H264
+#define DSV_PROGRAM_TYPE_SUPER 	3   //超清1920*1080 mpeg2
+
+#define DSV_PROGRAM_TYPE_BEGIN  DSV_PROGRAM_TYPE_NONE
+#define DSV_PROGRAM_TYPE_END    DSV_PROGRAM_TYPE_SUPER
+
+
 void      ffp_global_init();
 void      ffp_global_uninit();
 void      ffp_global_set_log_report(int use_report);
@@ -116,8 +130,12 @@ int64_t   ffp_get_property_int64(FFPlayer *ffp, int id, int64_t default_value);
 void      ffp_set_property_int64(FFPlayer *ffp, int id, int64_t value);
 
 
-
 // must be freed with free();
 struct IjkMediaMeta *ffp_get_meta_l(FFPlayer *ffp);
+
+void InitDSVParam(TDSVParam * param);
+void GetDSVParam(AVDictionary * opts, TDSVParam * param);
+
+
 
 #endif

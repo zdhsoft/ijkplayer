@@ -3056,8 +3056,167 @@ static int is_realtime(AVFormatContext *s)
         return 1;
     return 0;
 }
+
+
+
+//atoi()
+/** 初始化参数 */
+void InitDSVParam(TDSVParam * param) {
+	param->program_type = DSV_PROGRAM_TYPE_NONE;
+}
+
+void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
+	AVDictionaryEntry * t = av_dict_get(ffp->player_opts, "program-type", t, AV_DICT_IGNORE_SUFFIX);
+	if(t != NULL) {
+		int n = atoi(t->value);
+		if(n < DSV_PROGRAM_TYPE_BEGIN || n > DSV_PROGRAM_TYPE_END) {
+			n = DSV_PROGRAM_TYPE_BEGIN;
+		}
+		param->program_type = n;
+	}
+}
+
+int DSVVideoExtradata(AVFormatContext *s, int video_index)
+{
+   int  type, size, flags, pos, stream_type;
+   int ret = -1;
+   int64_t dts;
+   bool got_extradata = false;
+ 
+   if (!s || video_index < 0 || video_index > 2)
+      return ret;
+ 
+   for (;; avio_skip(s->pb, 4)) {
+      pos  = avio_tell(s->pb);
+      type = avio_r8(s->pb);
+      size = avio_rb24(s->pb);
+      dts  = avio_rb24(s->pb);
+      dts |= avio_r8(s->pb) << 24;
+      avio_skip(s->pb, 3);
+ 
+       if (0 == size)
+          break;
+       if (FLV_TAG_TYPE_AUDIO == type || FLV_TAG_TYPE_META == type) {
+          /*if audio or meta tags, skip them.*/
+          avio_seek(s->pb, size, SEEK_CUR);
+       } else if (type == FLV_TAG_TYPE_VIDEO) {
+         /*if the first video tag, read the sps/pps info from it. then break.*/
+          size -= 5;
+          s->streams[video_index]->codec->extradata = xmalloc(size + FF_INPUT_BUFFER_PADDING_SIZE);
+          if (NULL == s->streams[video_index]->codec->extradata)
+             break;
+          memset(s->streams[video_index]->codec->extradata, 0, size + FF_INPUT_BUFFER_PADDING_SIZE);
+          memcpy(s->streams[video_index]->codec->extradata, s->pb->buf_ptr + 5, size);
+          s->streams[video_index]->codec->extradata_size = size;
+          ret = 0;
+          got_extradata = true;
+       } else  {
+          /*The type unknown,something wrong.*/
+           break;
+       }
+ 
+       if (got_extradata)
+          break;
+   }
+ 
+   return ret;
+}
+
+
+/**
+	根据视频流，做预处理
+*/
+int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
+ 	//查找视频流
+	int video_index = -1;
+	int audio_index = -1;
+	AVStream * streamVideo = NULL;
+	AVStream * streamAudio = NULL;
+	for(int i = 0; i < ic->nb_streams; i++) {
+		AVStream * st = ic->streams[i];
+		if(st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+			video_index = i;
+			streamVideo = st;
+		}
+		else if(st->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
+			audio_index = i;
+			streamAudio = st;
+		}
+	}
+	switch(param->program_type) {
+		case DSV_PROGRAM_TYPE_NORMAL: 
+		{
+			if(streamVideo != NULL) {
+				  av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_NORMAL);
+				  streamVideo->codec->codec_id = AV_CODEC_ID_H264;
+				  streamVideo->codec->width = 720;
+				  streamVideo->codec->height = 576;
+				  streamVideo->codec->ticks_per_frame = 2;
+				  streamVideo->codec->pix_fmt = 0;
+				  streamVideo->pts_wrap_bits = 32;
+				  streamVideo->time_base.den = 1000;
+				  streamVideo->time_base.num = 1;
+				  streamVideo->avg_frame_rate.den = 90;
+				  streamVideo->avg_frame_rate.num = 3;
+				  streamVideo->r_frame_rate.den = 60;
+				  streamVideo->r_frame_rate.num = 2;
+				  DSVVideoExtradata(ic, video_index);	 
+			}
+			if(streamAudio != NULL) {
+		
+			}
+		}
+		break;
+		case DSV_PROGRAM_TYPE_HIGH: 
+		{
+			if(streamVideo != NULL) {
+				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_HIGH);
+				streamVideo->codec->codec_id = AV_CODEC_ID_H264;
+				streamVideo->codec->width = 1920;
+				streamVideo->codec->height = 1080;
+				streamVideo->codec->ticks_per_frame = 2;
+				streamVideo->codec->pix_fmt = 0;
+				streamVideo->pts_wrap_bits = 32;
+				streamVideo->time_base.den = 1000;
+				streamVideo->time_base.num = 1;
+				streamVideo->avg_frame_rate.den = 90;
+				streamVideo->avg_frame_rate.num = 3;
+				streamVideo->r_frame_rate.den = 60;
+				streamVideo->r_frame_rate.num = 2;
+				DSVVideoExtradata(ic, video_index);	   
+				
+			}
+			if(streamAudio != NULL) {
+			}
+		}
+		break;
+		case DSV_PROGRAM_TYPE_SUPER: 
+		{
+			if(streamVideo != NULL) {
+				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_SUPER);
+				streamVideo->codec->codec_id = AV_CODEC_ID_MPEG2VIDEO;
+				streamVideo->codec->width = 1920;
+				streamVideo->codec->height = 1080;
+				streamVideo->codec->ticks_per_frame = 2;
+				streamVideo->codec->pix_fmt = 0;
+				streamVideo->pts_wrap_bits = 32;
+				streamVideo->time_base.den = 1000;
+				streamVideo->time_base.num = 1;
+				streamVideo->avg_frame_rate.den = 90;
+				streamVideo->avg_frame_rate.num = 3;
+				streamVideo->r_frame_rate.den = 60;
+				streamVideo->r_frame_rate.num = 2;
+				//DSVVideoExtradata(ic, video_index);	 				
+			}
+			if(streamAudio != NULL) {
+			}
+		}
+		break;
+	}
+	return 0;
+}
+
 /* this thread gets the stream from the disk or the network */
-#define MAX_ENTRY_COUNT 10
 static int read_thread(void *arg)
 {
 	av_log(NULL, AV_LOG_ERROR, "********** read_thread start===>thread id=[%d]", (int)gettid());
@@ -3078,23 +3237,11 @@ static int read_thread(void *arg)
     int64_t prev_io_tick_counter = 0;
     int64_t io_tick_counter = 0;
     int init_ijkmeta = 0;
-	int program_type = -1;
 
-	int nEntryCount = 0;
-	//初始化数组
-	AVDictionaryEntry * entryList[MAX_ENTRY_COUNT];
-	entryList[nEntryCount++] = av_dict_get(ffp->player_opts, "program-type", t, AV_DICT_IGNORE_SUFFIX);
-	
-	
-	
-	
 
-	test_ffp_print_dictory(ffp->format_opts, "format_opts");
-	test_ffp_print_dictory(ffp->codec_opts, "codec_opts");
-	test_ffp_print_dictory(ffp->sws_dict, "sws_dict");
-	test_ffp_print_dictory(ffp->swr_opts, "swr_opts");
-	test_ffp_print_dictory(ffp->player_opts, "player_opts");
-	test_ffp_print_dictory(ffp->swr_preset_opts, "swr_preset_opts");
+	TDSVParam dsv_param;
+	InitDSVParam(&dsv_param);
+	GetDSVParam(ffp->player_opts, &dsv_param);
 
     if (!wait_mutex) {
         av_log(NULL, AV_LOG_FATAL, "SDL_CreateMutex(): %s\n", SDL_GetError());
@@ -3159,42 +3306,15 @@ static int read_thread(void *arg)
         ic->flags |= AVFMT_FLAG_GENPTS;
 
     av_format_inject_global_side_data(ic);
-    //
-    //AVDictionary **opts;
-    //int orig_nb_streams;
-    //opts = setup_find_stream_info_opts(ic, ffp->codec_opts);
-    //orig_nb_streams = ic->nb_streams;
-//	av_log(NULL, AV_LOG_DEBUG, "****************************************************");
-/*
-	test_ffp_print_dictory(ffp->format_opts, "format_opts");
-	test_ffp_print_dictory(ffp->codec_opts, "codec_opts");
-	test_ffp_print_dictory(ffp->sws_dict, "sws_dict");
-	test_ffp_print_dictory(ffp->swr_opts, "swr_opts");
-	test_ffp_print_dictory(ffp->player_opts, "player_opts");
-	test_ffp_print_dictory(ffp->swr_preset_opts, "swr_preset_opts");	
-*/	
-//	av_log(NULL, AV_LOG_DEBUG, "****************************************************");
 
-	av_log(NULL, AV_LOG_ERROR, "********** read_thread find_stream_info[%d] (%s:%d)", (int)gettid(), __FILE__, __LINE__);
+
     if (ffp->find_stream_info) {
-		av_log(NULL, AV_LOG_ERROR, "********** ffp->find_stream_info (%s:%d)", __FILE__, __LINE__);
         AVDictionary **opts = setup_find_stream_info_opts(ic, ffp->codec_opts, nEntryCount, entryList);
         int orig_nb_streams = ic->nb_streams;
-		av_log(NULL, AV_LOG_ERROR, "********** orig_nb_streams = %d (%s:%d)", orig_nb_streams,  __FILE__, __LINE__);
 
         do {
             if (av_stristart(is->filename, "data:", NULL) && orig_nb_streams > 0) {
-				av_log(NULL, AV_LOG_ERROR, "********** (av_stristart(is->filename, data:, NULL) && orig_nb_streams > 0) { (%s:%d)",  __FILE__, __LINE__);
                 for (i = 0; i < orig_nb_streams; i++) {
-					if(opts) {
-						test_ffp_print_dictory(opts[i], "-----");
-					}
-					if(ic->streams[i] && ic->streams[i]->codecpar) {
-						av_log(NULL, AV_LOG_ERROR, "********** stream[%d] codec_type=%d, codec_id=%d  (%s:%d)", i, ic->streams[i]->codecpar->codec_type, ic->streams[i]->codecpar->codec_id, __FILE__, __LINE__);
-					}
-					else {
-						av_log(NULL, AV_LOG_ERROR, "********** stream[%d]  streams->%d, (%s:%d)", i, (int)ic->streams[i], __FILE__, __LINE__);
-					}
                     if (!ic->streams[i] || !ic->streams[i]->codecpar || ic->streams[i]->codecpar->profile == FF_PROFILE_UNKNOWN) {
                         break;
                     }
@@ -3204,11 +3324,13 @@ static int read_thread(void *arg)
                     break;
                 }
             }
-			av_log(NULL, AV_LOG_ERROR, "********** avformat_find_stream_info(ic, opts) begin (%s:%d)", __FILE__, __LINE__);
-            err = avformat_find_stream_info(ic, opts);
-			av_log(NULL, AV_LOG_ERROR, "********** avformat_find_stream_info(ic, opts) end (%s:%d)", __FILE__, __LINE__);
+			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
+	            err = avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
+			}
+			else {
+				err = InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+			}
         } while(0);
-		av_log(NULL, AV_LOG_ERROR, "********** ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO); (%s:%d)", __FILE__, __LINE__);
         ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO);
 
         for (i = 0; i < orig_nb_streams; i++)
@@ -3222,9 +3344,7 @@ static int read_thread(void *arg)
             goto fail;
         }
     }
-	else {
-		av_log(NULL, AV_LOG_ERROR, "********** not found stream info (%s:%d)",  __FILE__, __LINE__);
-	}
+
     if (ic->pb)
         ic->pb->eof_reached = 0; // FIXME hack, ffplay maybe should not use avio_feof() to test for the end
 
@@ -3241,7 +3361,6 @@ static int read_thread(void *arg)
 
 #endif
     /* if seeking requested, we execute it */
-	av_log(NULL, AV_LOG_ERROR, "********** ffp->start_time != AV_NOPTS_VALUE (%s:%d)", __FILE__, __LINE__);
 
     if (ffp->start_time != AV_NOPTS_VALUE) {
         int64_t timestamp;
