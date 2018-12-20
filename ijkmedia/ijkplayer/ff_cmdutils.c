@@ -187,7 +187,7 @@ AVDictionary *filter_codec_opts(AVDictionary *opts, enum AVCodecID codec_id,
 }
 
 AVDictionary **setup_find_stream_info_opts(AVFormatContext *s,
-                                           AVDictionary *codec_opts, int otherOptsCnt, AVDictionaryEntry ** otheOptsList)
+                                           AVDictionary *codec_opts)
 {
     int i, j;
     AVDictionary **opts;
@@ -203,9 +203,6 @@ AVDictionary **setup_find_stream_info_opts(AVFormatContext *s,
     for (i = 0; i < s->nb_streams; i++) {
         opts[i] = filter_codec_opts(codec_opts, s->streams[i]->codecpar->codec_id,
                                     s, s->streams[i], NULL);
-		for(j = 0; j < otherOptsCnt; ++j) {
-			av_dict_set(&opts[i], otheOptsList[j]->key, otheOptsList[j]->value, 0);
-		}
     }
     return opts;
 }

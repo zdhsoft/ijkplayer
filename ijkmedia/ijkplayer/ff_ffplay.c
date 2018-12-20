@@ -3105,12 +3105,12 @@ int DSVVideoExtradata(AVFormatContext *s, int video_index)
        } else if (type == DSV_FLV_TAG_TYPE_VIDEO) {
          /*if the first video tag, read the sps/pps info from it. then break.*/
           size -= 5;
-          s->streams[video_index]->codec->extradata = xmalloc(size + FF_INPUT_BUFFER_PADDING_SIZE);
-          if (NULL == s->streams[video_index]->codec->extradata)
+          s->streams[video_index]->codecpar->extradata = xmalloc(size + FF_INPUT_BUFFER_PADDING_SIZE);
+          if (NULL == s->streams[video_index]->codecpar->extradata)
              break;
-          memset(s->streams[video_index]->codec->extradata, 0, size + FF_INPUT_BUFFER_PADDING_SIZE);
-          memcpy(s->streams[video_index]->codec->extradata, s->pb->buf_ptr + 5, size);
-          s->streams[video_index]->codec->extradata_size = size;
+          memset(s->streams[video_index]->codecpar->extradata, 0, size + FF_INPUT_BUFFER_PADDING_SIZE);
+          memcpy(s->streams[video_index]->codecpar->extradata, s->pb->buf_ptr + 5, size);
+          s->streams[video_index]->codecpar->extradata_size = size;
           ret = 0;
           got_extradata = true;
        } else  {
@@ -3151,11 +3151,11 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		{
 			if(streamVideo != NULL) {
 				  av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_NORMAL);
-				  streamVideo->codec->codec_id = AV_CODEC_ID_H264;
-				  streamVideo->codec->width = 720;
-				  streamVideo->codec->height = 576;
-				  streamVideo->codec->ticks_per_frame = 2;
-				  streamVideo->codec->pix_fmt = 0;
+				  streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
+				  streamVideo->codecpar->width = 720;
+				  streamVideo->codecpar->height = 576;
+				  streamVideo->codecpar->ticks_per_frame = 2;
+				  streamVideo->codecpar->pix_fmt = 0;
 				  streamVideo->pts_wrap_bits = 32;
 				  streamVideo->time_base.den = 1000;
 				  streamVideo->time_base.num = 1;
@@ -3174,11 +3174,11 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		{
 			if(streamVideo != NULL) {
 				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_HIGH);
-				streamVideo->codec->codec_id = AV_CODEC_ID_H264;
-				streamVideo->codec->width = 1920;
-				streamVideo->codec->height = 1080;
-				streamVideo->codec->ticks_per_frame = 2;
-				streamVideo->codec->pix_fmt = 0;
+				streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
+				streamVideo->codecpar->width = 1920;
+				streamVideo->codecpar->height = 1080;
+				streamVideo->codecpar->ticks_per_frame = 2;
+				streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 1000;
 				streamVideo->time_base.num = 1;
@@ -3197,11 +3197,11 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		{
 			if(streamVideo != NULL) {
 				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codec->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_SUPER);
-				streamVideo->codec->codec_id = AV_CODEC_ID_MPEG2VIDEO;
-				streamVideo->codec->width = 1920;
-				streamVideo->codec->height = 1080;
-				streamVideo->codec->ticks_per_frame = 2;
-				streamVideo->codec->pix_fmt = 0;
+				streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
+				streamVideo->codecpar->width = 1920;
+				streamVideo->codecpar->height = 1080;
+				streamVideo->codecpar->ticks_per_frame = 2;
+				streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 1000;
 				streamVideo->time_base.num = 1;
@@ -3312,7 +3312,7 @@ static int read_thread(void *arg)
 
 
     if (ffp->find_stream_info) {
-        AVDictionary **opts = setup_find_stream_info_opts(ic, ffp->codec_opts, nEntryCount, entryList);
+        AVDictionary **opts = setup_find_stream_info_opts(ic, ffp->codec_opts);
         int orig_nb_streams = ic->nb_streams;
 
         do {
