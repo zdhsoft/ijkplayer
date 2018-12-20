@@ -3081,7 +3081,7 @@ void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
 
 int DSVVideoExtradata(AVFormatContext *s, int video_index)
 {
-   int  type, size, flags, pos, stream_type;
+   int  type, size, pos;
    int ret = -1;
    int64_t dts;
    bool got_extradata = false;
@@ -3105,7 +3105,7 @@ int DSVVideoExtradata(AVFormatContext *s, int video_index)
        } else if (type == DSV_FLV_TAG_TYPE_VIDEO) {
          /*if the first video tag, read the sps/pps info from it. then break.*/
           size -= 5;
-          s->streams[video_index]->codecpar->extradata = xmalloc(size + FF_INPUT_BUFFER_PADDING_SIZE);
+          s->streams[video_index]->codecpar->extradata = av_mallocz(size + FF_INPUT_BUFFER_PADDING_SIZE);
           if (NULL == s->streams[video_index]->codecpar->extradata)
              break;
           memset(s->streams[video_index]->codecpar->extradata, 0, size + FF_INPUT_BUFFER_PADDING_SIZE);

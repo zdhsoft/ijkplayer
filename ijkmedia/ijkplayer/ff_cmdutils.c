@@ -189,7 +189,7 @@ AVDictionary *filter_codec_opts(AVDictionary *opts, enum AVCodecID codec_id,
 AVDictionary **setup_find_stream_info_opts(AVFormatContext *s,
                                            AVDictionary *codec_opts)
 {
-    int i, j;
+    int i;
     AVDictionary **opts;
 
     if (!s->nb_streams)
