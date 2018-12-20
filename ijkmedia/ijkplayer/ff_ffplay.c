@@ -3191,7 +3191,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				//streamVideo->codecpar->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
@@ -3346,9 +3346,11 @@ static int read_thread(void *arg)
                 }
             }
 			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
+				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info*************");
 	            err = avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 			}
 			else {
+				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* %d", dsv_param.program_type);
 				err = InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
 			}
         } while(0);
