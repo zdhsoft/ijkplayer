@@ -3169,6 +3169,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				DSVVideoExtradata(ic, video_index);	 
 			}
 			if(streamAudio != NULL) {
+				/*
 		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_AAC;
      			streamAudio->codecpar->sample_rate = 44100;
 				streamAudio->time_base.den = 44100;
@@ -3179,6 +3180,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
 				streamAudio->time_base.num = 1;
+				*/
 			}
 		}
 		break;
