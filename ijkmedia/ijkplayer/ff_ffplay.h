@@ -35,6 +35,12 @@ enum enumProgramType {
 	DSV_PROGRAM_TYPE_END = 3
 };
 
+enum enumDSVFlgTag {
+    DSV_FLV_TAG_TYPE_AUDIO = 0x08,
+    DSV_FLV_TAG_TYPE_VIDEO = 0x09,
+    DSV_FLV_TAG_TYPE_META  = 0x12,
+};
+
 
 
 typedef struct TDSVParam {

@@ -48,7 +48,6 @@
 #include "libavutil/avassert.h"
 #include "libavutil/time.h"
 #include "libavformat/avformat.h"
-#include "libavformat/flv.h"
 #if CONFIG_AVDEVICE
 #include "libavdevice/avdevice.h"
 #endif
@@ -3077,6 +3076,9 @@ void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
 	}
 }
 
+
+
+
 int DSVVideoExtradata(AVFormatContext *s, int video_index)
 {
    int  type, size, flags, pos, stream_type;
@@ -3097,10 +3099,10 @@ int DSVVideoExtradata(AVFormatContext *s, int video_index)
  
        if (0 == size)
           break;
-       if (FLV_TAG_TYPE_AUDIO == type || FLV_TAG_TYPE_META == type) {
+       if (DSV_FLV_TAG_TYPE_AUDIO == type || DSV_FLV_TAG_TYPE_META == type) {
           /*if audio or meta tags, skip them.*/
           avio_seek(s->pb, size, SEEK_CUR);
-       } else if (type == FLV_TAG_TYPE_VIDEO) {
+       } else if (type == DSV_FLV_TAG_TYPE_VIDEO) {
          /*if the first video tag, read the sps/pps info from it. then break.*/
           size -= 5;
           s->streams[video_index]->codec->extradata = xmalloc(size + FF_INPUT_BUFFER_PADDING_SIZE);
