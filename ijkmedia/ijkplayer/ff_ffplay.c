@@ -3151,38 +3151,50 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		case DSV_PROGRAM_TYPE_NORMAL: 
 		{
 			if(streamVideo != NULL) {
-				  av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_NORMAL);
-				  streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
-				  streamVideo->codecpar->width = 720;
-				  streamVideo->codecpar->height = 576;
-				  //streamVideo->codecpar->ticks_per_frame = 2;
-				  //streamVideo->codecpar->pix_fmt = 0;
-				  streamVideo->pts_wrap_bits = 32;
-				  streamVideo->time_base.den = 1;
-				  streamVideo->time_base.num = 1000;
-				  streamVideo->avg_frame_rate.den = 3;
-				  streamVideo->avg_frame_rate.num = 75;
-				  streamVideo->r_frame_rate.den = 3;
-				  streamVideo->r_frame_rate.num = 75;
-				  DSVVideoExtradata(ic, video_index);	 
+				//av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_NORMAL);
+				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
+				streamVideo->codecpar->width = 720;
+				streamVideo->codecpar->height = 576;
+				  streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				//streamVideo->codecpar->ticks_per_frame = 2;
+				//streamVideo->codecpar->pix_fmt = 0;
+				streamVideo->pts_wrap_bits = 32;
+				streamVideo->time_base.den = 90000;
+				streamVideo->time_base.num = 1;
+				streamVideo->avg_frame_rate.den = 3;
+				streamVideo->avg_frame_rate.num = 75;
+				streamVideo->r_frame_rate.den = 3;
+				streamVideo->r_frame_rate.num = 75;
+
+				DSVVideoExtradata(ic, video_index);	 
 			}
 			if(streamAudio != NULL) {
-		
+		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_AAC;
+     			streamAudio->codecpar->sample_rate = 44100;
+				streamAudio->time_base.den = 44100;
+				streamAudio->time_base.num = 1;
+				streamAudio->codecpar->bits_per_coded_sample = 16;
+				streamAudio->codecpar->channels = 2;
+				streamAudio->codecpar->channel_layout = 3;
+				streamAudio->pts_wrap_bits = 32;
+				streamAudio->time_base.den = 1000;
+				streamAudio->time_base.num = 1;
 			}
 		}
 		break;
 		case DSV_PROGRAM_TYPE_HIGH: 
 		{
 			if(streamVideo != NULL) {
-				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_HIGH);
-				streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
+				//av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_HIGH);
+				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
+				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				//streamVideo->codecpar->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
-				streamVideo->time_base.den = 1;
-				streamVideo->time_base.num = 1000;
+				streamVideo->time_base.den = 90000;
+				streamVideo->time_base.num = 1;
 				streamVideo->avg_frame_rate.den = 3;
 				streamVideo->avg_frame_rate.num = 75;
 				streamVideo->r_frame_rate.den = 3;
@@ -3194,19 +3206,21 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 			}
 		}
 		break;
+		
 		case DSV_PROGRAM_TYPE_SUPER: 
 		{
 			if(streamVideo != NULL) {
-				av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_SUPER);
-				streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
+				//av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_SUPER);
+				//streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				
+				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+
 				//ic->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
-				streamVideo->time_base.den = 1;
-				streamVideo->time_base.num = 1000;
+				streamVideo->time_base.den = 90000;
+				streamVideo->time_base.num = 1;
 				streamVideo->avg_frame_rate.den = 3;
 				streamVideo->avg_frame_rate.num = 75;
 				streamVideo->r_frame_rate.den = 3;
