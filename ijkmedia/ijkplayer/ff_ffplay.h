@@ -25,14 +25,6 @@
 #ifndef FFPLAY__FF_FFPLAY_H
 #define FFPLAY__FF_FFPLAY_H
 
-#include "ff_ffplay_def.h"
-#include "ff_fferror.h"
-#include "ff_ffmsg.h"
-
-typedef struct TDSVParam {
-	int program_type;
-}TDSVParam;
-
 /** unknow */
 #define DSV_PROGRAM_TYPE_NONE 	0
 /**　576*720   H264 or mpeg2　*/
@@ -44,6 +36,18 @@ typedef struct TDSVParam {
 
 #define DSV_PROGRAM_TYPE_BEGIN  DSV_PROGRAM_TYPE_NONE
 #define DSV_PROGRAM_TYPE_END    DSV_PROGRAM_TYPE_SUPER
+
+
+typedef struct TDSVParam {
+	int program_type;
+}TDSVParam;
+
+
+#include "ff_ffplay_def.h"
+#include "ff_fferror.h"
+#include "ff_ffmsg.h"
+
+
 
 
 void      ffp_global_init();
