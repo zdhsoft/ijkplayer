@@ -3066,7 +3066,8 @@ void InitDSVParam(TDSVParam * param) {
 }
 
 void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
-	AVDictionaryEntry * t = av_dict_get(opts, "program-type", t, AV_DICT_IGNORE_SUFFIX);
+	AVDictionaryEntry * t = NULL;
+	t = av_dict_get(opts, "program-type", t, AV_DICT_IGNORE_SUFFIX);
 	if(t != NULL) {
 		int n = atoi(t->value);
 		if(n < DSV_PROGRAM_TYPE_BEGIN || n > DSV_PROGRAM_TYPE_END) {
