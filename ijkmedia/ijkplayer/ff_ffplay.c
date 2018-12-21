@@ -3333,13 +3333,13 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
     av_init_packet(&packet);
     while (true)
     {
-        int ret1 = av_read_frame(s, &packet);
+        int ret1 = av_read_frame(ic, &packet);
         if (packet.flags & AV_PKT_FLAG_KEY)
         {
             break;
         }
     }
-    add_to_pktbuf(&(s->packet_buffer), &packet, &(s->packet_buffer_end));
+    add_to_pktbuf(&(ic->packet_buffer), &packet, &(ic->packet_buffer_end));
 	ic->pb->pos = (int64_t)ic->pb->buf_end;
 	return 0;
 }
