@@ -48,6 +48,7 @@
 #include "libavutil/avassert.h"
 #include "libavutil/time.h"
 #include "libavformat/avformat.h"
+#include "libavformat/internal.h"
 #if CONFIG_AVDEVICE
 #include "libavdevice/avdevice.h"
 #endif
