@@ -3126,6 +3126,22 @@ int DSVVideoExtradata(AVFormatContext *s, int video_index)
    return ret;
 }
 
+AVPacket *add_to_pktbuf(AVPacketList **packet_buffer, AVPacket *pkt, AVPacketList **plast_pktl)
+{
+    AVPacketList *pktl = (AVPacketList *)av_mallocz(sizeof(AVPacketList));
+    if (!pktl)
+        return NULL;
+
+    if (*packet_buffer)
+        (*plast_pktl)->next = pktl;
+    else
+        *packet_buffer = pktl;
+
+    /* Add the packet in the buffered packet list. */
+    *plast_pktl = pktl;
+    pktl->pkt   = *pkt;
+    return &pktl->pkt;
+}
 
 /**
 	根据视频流，做预处理
@@ -3151,13 +3167,10 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		case DSV_PROGRAM_TYPE_NORMAL: 
 		{
 			if(streamVideo != NULL) {
-				//av_log(ic, AV_LOG_ERROR, "codec_id:%d,%d programType=%d", streamVideo->codecpar->codec_id, AV_CODEC_ID_H264, DSV_PROGRAM_TYPE_NORMAL);
-				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 720;
 				streamVideo->codecpar->height = 576;
 				streamVideo->codecpar->format = 0;
-				//streamVideo->codecpar->ticks_per_frame = 2;
-				//streamVideo->codecpar->pix_fmt = 0;
+				streamVideo->codec->ticks_per_frame = 2;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 90000;
 				streamVideo->time_base.num = 1;
@@ -3167,22 +3180,41 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->r_frame_rate.num = 75;
 				streamVideo->sample_aspect_ratio.num = 16;
 				streamVideo->sample_aspect_ratio.den = 15;
+				streamVideo->codecpar->frame_size = 0;
+				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->profile = 66;
+				streamVideo->codecpar->level = 31;
+				streamVideo->avg_frame_rate.den = 1;
+				streamVideo->avg_frame_rate.num = 25;
+				av_dict_set(ic->metadata, "encoder", "avf57.0.100", 0);
+				ic->duration = 0;
+				ic->start_time = 0;
+				ic->bit_rate = 0;
+				ic->iformat->flags = 0;
+				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
 				
 
 			}
 			if(streamAudio != NULL) {
-		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_MP2;
-     			streamAudio->codecpar->sample_rate = 48000;
+		     	//streamAudio->codecpar->codec_id = AV_CODEC_ID_MP2;
+     			streamAudio->codecpar->sample_rate = 8000;
 				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
 				streamAudio->codecpar->bits_per_coded_sample = 16;
-				streamAudio->codecpar->channels = 2;
-				streamAudio->codecpar->channel_layout = 3;
+				streamAudio->codecpar->channels = 1;
+				streamAudio->codecpar->channel_layout = 4;
+				streamAudio->pts_wrap_bits = 32;
+				streamAudio->time_base.den = 1000;
+				streamAudio->time_base.num = 1;
+				streamVideo->codecpar->bit_rate = 16000;
+				streamAudio->codec->refs = 1;
+				streamAudio->codecpar->profile = 1;
+				streamAudio->codecpar->level = 99;
 				streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
 				streamAudio->time_base.num = 1;
 			}
-			DSVVideoExtradata(ic, video_index);  
+			//DSVVideoExtradata(ic, video_index);  
 		}
 		break;
 		case DSV_PROGRAM_TYPE_HIGH: 
@@ -3193,8 +3225,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
 				streamVideo->codecpar->format = 0;
-				//streamVideo->codecpar->ticks_per_frame = 2;
-				//streamVideo->codecpar->pix_fmt = 0;
+				streamVideo->codec->ticks_per_frame = 2;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 90000;
 				streamVideo->time_base.num = 1;
@@ -3203,22 +3234,41 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->r_frame_rate.den = 3;
 				streamVideo->r_frame_rate.num = 75;
 				streamVideo->sample_aspect_ratio.num = 16;
-				streamVideo->sample_aspect_ratio.den = 15;				
+				streamVideo->sample_aspect_ratio.den = 15;
+				streamVideo->codecpar->frame_size = 0;
+				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->profile = 66;
+				streamVideo->codecpar->level = 31;
+				streamVideo->avg_frame_rate.den = 1;
+				streamVideo->avg_frame_rate.num = 25;
+				av_dict_set(ic->metadata, "encoder", "avf57.0.100", 0);
+				ic->duration = 0;
+				ic->start_time = 0;
+				ic->bit_rate = 0;
+				ic->iformat->flags = 0;
+				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;			
 				
 			}
 			if(streamAudio != NULL) {
-		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_AC3;
-     			streamAudio->codecpar->sample_rate = 48000;
+		     	//streamAudio->codecpar->codec_id = AV_CODEC_ID_AC3;
+     			streamAudio->codecpar->sample_rate = 8000;
 				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
 				streamAudio->codecpar->bits_per_coded_sample = 16;
-				streamAudio->codecpar->channels = 2;
-				streamAudio->codecpar->channel_layout = 3;
+				streamAudio->codecpar->channels = 1;
+				streamAudio->codecpar->channel_layout = 4;
 				streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
-				streamAudio->time_base.num = 1;				
+				streamAudio->time_base.num = 1;
+				streamVideo->codecpar->bit_rate = 16000;
+				streamAudio->codec->refs = 1;
+				streamAudio->codecpar->profile = 1;
+				streamAudio->codecpar->level = 99;
+				streamAudio->pts_wrap_bits = 32;
+				streamAudio->time_base.den = 1000;
+				streamAudio->time_base.num = 1;		
 			}
-			DSVVideoExtradata(ic, video_index);    
+			//DSVVideoExtradata(ic, video_index);    
 		}
 		break;
 		
@@ -3229,10 +3279,8 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
-
-				//ic->ticks_per_frame = 2;
-				//streamVideo->codecpar->pix_fmt = 0;
+				streamVideo->codecpar->format = 0;
+				streamVideo->codec->ticks_per_frame = 2;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 90000;
 				streamVideo->time_base.num = 1;
@@ -3241,24 +3289,58 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->r_frame_rate.den = 3;
 				streamVideo->r_frame_rate.num = 75;
 				streamVideo->sample_aspect_ratio.num = 16;
-				streamVideo->sample_aspect_ratio.den = 15;				
+				streamVideo->sample_aspect_ratio.den = 15;
+				streamVideo->codecpar->frame_size = 0;
+				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->profile = 66;
+				streamVideo->codecpar->level = 31;
+				streamVideo->avg_frame_rate.den = 1;
+				streamVideo->avg_frame_rate.num = 25;
+				av_dict_set(ic->metadata, "encoder", "avf57.0.100", 0);
+				ic->duration = 0;
+				ic->start_time = 0;
+				ic->bit_rate = 0;
+				ic->iformat->flags = 0;
+				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;			
 				//DSVVideoExtradata(ic, video_index);	 				
 			}
 			if(streamAudio != NULL) {
-		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_AC3;
-     			streamAudio->codecpar->sample_rate = 48000;
+		     	//streamAudio->codecpar->codec_id = AV_CODEC_ID_AC3;
+     			streamAudio->codecpar->sample_rate = 8000;
 				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
 				streamAudio->codecpar->bits_per_coded_sample = 16;
-				streamAudio->codecpar->channels = 2;
-				streamAudio->codecpar->channel_layout = 3;
+				streamAudio->codecpar->channels = 1;
+				streamAudio->codecpar->channel_layout = 4;
 				streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
-				streamAudio->time_base.num = 1;						
+				streamAudio->time_base.num = 1;
+				streamVideo->codecpar->bit_rate = 16000;
+				streamAudio->codec->refs = 1;
+				streamAudio->codecpar->profile = 1;
+				streamAudio->codecpar->level = 99;
+				streamAudio->pts_wrap_bits = 32;
+				streamAudio->time_base.den = 1000;
+				streamAudio->time_base.num = 1;				
 			}
 		}
 		break;
+		default:
+			return -1;
+		break;
 	}
+	AVPacket packet;
+    av_init_packet(&packet);
+    while (true)
+    {
+        int ret1 = av_read_frame(s, &packet);
+        if (packet.flags & AV_PKT_FLAG_KEY)
+        {
+            break;
+        }
+    }
+    add_to_pktbuf(&(s->packet_buffer), &packet, &(s->packet_buffer_end));
+	ic->pb->pos = (int64_t)ic->pb->buf_end;
 	return 0;
 }
 

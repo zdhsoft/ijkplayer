@@ -152,6 +152,8 @@ struct IjkMediaMeta *ffp_get_meta_l(FFPlayer *ffp);
 
 void InitDSVParam(TDSVParam * param);
 void GetDSVParam(AVDictionary * opts, TDSVParam * param);
+AVPacket *add_to_pktbuf(AVPacketList **packet_buffer, AVPacket *pkt, AVPacketList **plast_pktl);
+
 
 
 
