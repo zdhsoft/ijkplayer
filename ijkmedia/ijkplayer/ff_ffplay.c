@@ -3197,26 +3197,6 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				*/
 
 			}
-			if(streamAudio != NULL) {
-		     	//streamAudio->codecpar->codec_id = AV_CODEC_ID_MP2;
-     			streamAudio->codecpar->sample_rate = 8000;
-				streamAudio->time_base.den = 48000;
-				streamAudio->time_base.num = 1;
-				streamAudio->codecpar->bits_per_coded_sample = 16;
-				streamAudio->codecpar->channels = 1;
-				streamAudio->codecpar->channel_layout = 4;
-				streamAudio->pts_wrap_bits = 32;
-				streamAudio->time_base.den = 1000;
-				streamAudio->time_base.num = 1;
-				streamVideo->codecpar->bit_rate = 16000;
-				streamAudio->codec->refs = 1;
-				streamAudio->codecpar->profile = 1;
-				streamAudio->codecpar->level = 99;
-				streamAudio->pts_wrap_bits = 32;
-				streamAudio->time_base.den = 1000;
-				streamAudio->time_base.num = 1;
-			}
-			//DSVVideoExtradata(ic, video_index);  
 		}
 		break;
 		case DSV_PROGRAM_TYPE_HIGH: 
@@ -3253,26 +3233,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				*/
 				
 			}
-			if(streamAudio != NULL) {
-		     	//streamAudio->codecpar->codec_id = AV_CODEC_ID_AC3;
-     			streamAudio->codecpar->sample_rate = 8000;
-				streamAudio->time_base.den = 48000;
-				streamAudio->time_base.num = 1;
-				streamAudio->codecpar->bits_per_coded_sample = 16;
-				streamAudio->codecpar->channels = 1;
-				streamAudio->codecpar->channel_layout = 4;
-				streamAudio->pts_wrap_bits = 32;
-				streamAudio->time_base.den = 1000;
-				streamAudio->time_base.num = 1;
-				streamVideo->codecpar->bit_rate = 16000;
-				streamAudio->codec->refs = 1;
-				streamAudio->codecpar->profile = 1;
-				streamAudio->codecpar->level = 99;
-				streamAudio->pts_wrap_bits = 32;
-				streamAudio->time_base.den = 1000;
-				streamAudio->time_base.num = 1;		
-			}
-			//DSVVideoExtradata(ic, video_index);    
+  
 		}
 		break;
 		
@@ -3308,11 +3269,36 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				ic->iformat->flags = 0;
 				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;			
 				*/
-				//DSVVideoExtradata(ic, video_index);	 				
 			}
-			if(streamAudio != NULL) {
-		     	//streamAudio->codecpar->codec_id = AV_CODEC_ID_AC3;
-     			streamAudio->codecpar->sample_rate = 8000;
+
+		}
+		break;
+		default:
+			return -1;
+		break;
+	}
+
+	if(streamAudio != NULL) {
+/*
+	streamAudio->time_base.den = 48000;
+					streamAudio->time_base.num = 1;
+					streamAudio->codecpar->bits_per_coded_sample = 16;
+					streamAudio->codecpar->channels = 1;
+					streamAudio->codecpar->channel_layout = 4;
+					streamAudio->pts_wrap_bits = 32;
+					streamAudio->time_base.den = 1000;
+					streamAudio->time_base.num = 1;
+					streamVideo->codecpar->bit_rate = 16000;
+					streamAudio->codec->refs = 1;
+					streamAudio->codecpar->profile = 1;
+					streamAudio->codecpar->level = 99;
+					streamAudio->pts_wrap_bits = 32;
+					streamAudio->time_base.den = 1000;
+					streamAudio->time_base.num = 1;
+
+	*/		
+		if(streamAudio->codecpar->codec_id == AV_CODEC_ID_MP2) {
+     			streamAudio->codecpar->sample_rate = 48000;
 				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
 				streamAudio->codecpar->bits_per_coded_sample = 16;
@@ -3320,20 +3306,22 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamAudio->codecpar->channel_layout = 4;
 				streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
+				streamAudio->time_base.num = 1;			
+		}
+		else if(streamAudio->codecpar->codec_id == AV_CODEC_ID_AC3) {
+     			streamAudio->codecpar->sample_rate = 48000;
+				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
-				streamVideo->codecpar->bit_rate = 16000;
-				streamAudio->codec->refs = 1;
-				streamAudio->codecpar->profile = 1;
-				streamAudio->codecpar->level = 99;
+				streamAudio->codecpar->bits_per_coded_sample = 16;
+				streamAudio->codecpar->channels = 2;
+				streamAudio->codecpar->channel_layout = 3;
 				streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
 				streamAudio->time_base.num = 1;				
-			}
 		}
-		break;
-		default:
-			return -1;
-		break;
+		else {
+			av_log(ic, AV_LOG_ERROR, "unknow audio codec id:%d", streamAudio->codecpar->codec_id);
+		}
 	}
 	AVPacket packet;
     av_init_packet(&packet);
