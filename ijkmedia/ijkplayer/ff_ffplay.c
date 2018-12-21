@@ -3186,7 +3186,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->codecpar->level = 31;
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
-				av_dict_set(ic->metadata, "encoder", "avf57.0.100", 0);
+				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
 				ic->duration = 0;
 				ic->start_time = 0;
 				ic->bit_rate = 0;
@@ -3241,7 +3241,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->codecpar->level = 31;
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
-				av_dict_set(ic->metadata, "encoder", "avf57.0.100", 0);
+				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
 				ic->duration = 0;
 				ic->start_time = 0;
 				ic->bit_rate = 0;
@@ -3296,7 +3296,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->codecpar->level = 31;
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
-				av_dict_set(ic->metadata, "encoder", "avf57.0.100", 0);
+				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
 				ic->duration = 0;
 				ic->start_time = 0;
 				ic->bit_rate = 0;
