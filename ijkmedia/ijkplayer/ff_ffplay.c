@@ -3320,6 +3320,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamAudio->time_base.num = 1;				
 		}
 		else if(streamAudio->codecpar->codec_id == AV_CODEC_ID_MP3) {
+				streamAudio->codecpar->codec_id = AV_CODEC_ID_MP2;
      			streamAudio->codecpar->sample_rate = 48000;
 				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
