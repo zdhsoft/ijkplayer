@@ -3188,12 +3188,13 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
+				/*
 				ic->duration = 0;
 				ic->start_time = 0;
 				ic->bit_rate = 0;
 				ic->iformat->flags = 0;
 				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
-				
+				*/
 
 			}
 			if(streamAudio != NULL) {
@@ -3243,11 +3244,13 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
+				/*
 				ic->duration = 0;
 				ic->start_time = 0;
 				ic->bit_rate = 0;
 				ic->iformat->flags = 0;
 				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;			
+				*/
 				
 			}
 			if(streamAudio != NULL) {
@@ -3298,11 +3301,13 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
+				/*
 				ic->duration = 0;
 				ic->start_time = 0;
 				ic->bit_rate = 0;
 				ic->iformat->flags = 0;
 				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;			
+				*/
 				//DSVVideoExtradata(ic, video_index);	 				
 			}
 			if(streamAudio != NULL) {
@@ -3332,6 +3337,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 	}
 	AVPacket packet;
     av_init_packet(&packet);
+	av_log(ic, AV_LOG_ERROR, "------------------------------------1");
     while (true)
     {
         av_read_frame(ic, &packet);
@@ -3340,7 +3346,9 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
             break;
         }
     }
+	av_log(ic, AV_LOG_ERROR, "------------------------------------2");
     add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
+	av_log(ic, AV_LOG_ERROR, "------------------------------------3");
 	ic->pb->pos = (int64_t)ic->pb->buf_end;
 	return 0;
 }
