@@ -3320,7 +3320,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamAudio->time_base.num = 1;				
 		}
 		else if(streamAudio->codecpar->codec_id == AV_CODEC_ID_MP3) {
-				streamAudio->codecpar->codec_id = AV_CODEC_ID_MP2;
+				//streamAudio->codecpar->codec_id = AV_CODEC_ID_MP2;
      			streamAudio->codecpar->sample_rate = 48000;
 				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
@@ -3336,6 +3336,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 			av_log(ic, AV_LOG_ERROR, "unknow audio codec id:%d", streamAudio->codecpar->codec_id);
 		}
 	}
+	ic->duration = 0;
 	AVPacket packet;
     av_init_packet(&packet);
 	av_log(ic, AV_LOG_ERROR, "------------------------------------1");
@@ -3462,6 +3463,16 @@ static int read_thread(void *arg)
                     break;
                 }
             }
+			av_log(NULL, AV_LOG_ERROR, "*************************************************************AAAA");
+			InitVideoDecoderByDSVParam(ic, &dsv_param); 
+			av_dump_format(ic, 0, is->filename, 0);
+			av_log(NULL, AV_LOG_ERROR, "*************************************************************BBBB");			
+			avformat_find_stream_info(ic, opts); 
+			av_dump_format(ic, 0, is->filename, 0);
+			av_log(NULL, AV_LOG_ERROR, "*************************************************************CCCC");			
+			
+			
+/*
 			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info*************");
 	            err = avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
@@ -3470,6 +3481,7 @@ static int read_thread(void *arg)
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* %d", dsv_param.program_type);
 				err = InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
 			}
+*/			
         } while(0);
         ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO);
 
