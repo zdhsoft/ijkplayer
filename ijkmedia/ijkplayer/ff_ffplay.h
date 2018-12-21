@@ -25,14 +25,19 @@
 #ifndef FFPLAY__FF_FFPLAY_H
 #define FFPLAY__FF_FFPLAY_H
 
+/**
+	节目流预设类型
+ */
+
 enum enumProgramType {
-	DSV_PROGRAM_TYPE_NONE = 0,    ///<unknow
-	DSV_PROGRAM_TYPE_NORMAL = 1,  ///<576*720 H264 or mpeg2
-	DSV_PROGRAM_TYPE_HIGH = 2,    ///<1920*1080 H264
-	DSV_PROGRAM_TYPE_SUPER = 3,   ///<1920*1080 mpeg2
+	DSV_PROGRAM_TYPE_NONE = 0,    	///<unknow
+	DSV_PROGRAM_TYPE_NORMAL = 1,  	///<576*720 H264 or mpeg2
+	DSV_PROGRAM_TYPE_HIGH = 2,    	///<1920*1080 H264
+	DSV_PROGRAM_TYPE_SUPER = 3,   	///<1920*1080 mpeg2
+	DSV_PROGRAM_TYPE_4K = 4,		///<4K节目     3840*2160   hevc(h265)的节目
 	
 	DSV_PROGRAM_TYPE_BEGIN = 0,
-	DSV_PROGRAM_TYPE_END = 3
+	DSV_PROGRAM_TYPE_END = 3       //暂时不用到4k
 };
 
 enum enumDSVFlgTag {

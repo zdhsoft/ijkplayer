@@ -3155,7 +3155,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 720;
 				streamVideo->codecpar->height = 576;
-				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->format = 0;
 				//streamVideo->codecpar->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
@@ -3169,7 +3169,6 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->sample_aspect_ratio.den = 15;
 				
 
-				DSVVideoExtradata(ic, video_index);	 
 			}
 			if(streamAudio != NULL) {
 		     	streamAudio->codecpar->codec_id = AV_CODEC_ID_MP2;
@@ -3183,6 +3182,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamAudio->time_base.den = 1000;
 				streamAudio->time_base.num = 1;
 			}
+			DSVVideoExtradata(ic, video_index);  
 		}
 		break;
 		case DSV_PROGRAM_TYPE_HIGH: 
@@ -3192,7 +3192,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->format = 0;
 				//streamVideo->codecpar->ticks_per_frame = 2;
 				//streamVideo->codecpar->pix_fmt = 0;
 				streamVideo->pts_wrap_bits = 32;
@@ -3204,7 +3204,6 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->r_frame_rate.num = 75;
 				streamVideo->sample_aspect_ratio.num = 16;
 				streamVideo->sample_aspect_ratio.den = 15;				
-				DSVVideoExtradata(ic, video_index);	   
 				
 			}
 			if(streamAudio != NULL) {
@@ -3219,6 +3218,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamAudio->time_base.den = 1000;
 				streamAudio->time_base.num = 1;				
 			}
+			DSVVideoExtradata(ic, video_index);    
 		}
 		break;
 		
@@ -3830,7 +3830,7 @@ static int read_thread(void *arg)
                     ffp_check_buffering_l(ffp);
                 }
             } else {
-                if (abs((int)(io_tick_counter - prev_io_tick_counter)) > BUFFERING_CHECK_PER_MILLISECONDS) {
+                if (abs((int)(io_tick_counter - prev_io_tick_counter)) > FAST_BUFFERING_CHECK_PER_MILLISECONDS) {//BUFFERING_CHECK_PER_MILLISECONDS) {
                     prev_io_tick_counter = io_tick_counter;
                     ffp_check_buffering_l(ffp);
                 }
