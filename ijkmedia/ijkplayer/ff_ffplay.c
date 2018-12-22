@@ -3463,6 +3463,7 @@ static int read_thread(void *arg)
 			else {
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* %d", dsv_param.program_type);
 				err = InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				err = avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 			}
 			
         } while(0);
