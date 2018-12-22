@@ -3259,6 +3259,9 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 			return -1;
 		break;
 	}
+	if(streamVideo != NULL) {
+		DSVVideoExtradata(ic, video_index);
+	}
 
 	if(streamAudio != NULL) {
 
