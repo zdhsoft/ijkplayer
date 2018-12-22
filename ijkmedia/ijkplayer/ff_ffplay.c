@@ -3340,7 +3340,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
         }
     }
 	//av_log(ic, AV_LOG_ERROR, "------------------------------------2");
-    //add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
+    add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
 	//av_log(ic, AV_LOG_ERROR, "------------------------------------3");
 	ic->pb->pos = (int64_t)ic->pb->buf_end;
 	return 0;
