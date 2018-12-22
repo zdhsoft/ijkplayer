@@ -3175,12 +3175,6 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->codecpar->codec_tag = 0x001B;
 				streamVideo->codecpar->chroma_location = AVCHROMA_LOC_LEFT;
 				streamVideo->codecpar->field_order = AV_FIELD_TT;
-				
-				
-				//streamVideo->codecpar->bits_per_raw_sample = 
-				//0x001B
-					
-
 				//streamVideo->codec->ticks_per_frame = 2;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 90000;
@@ -3351,14 +3345,23 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 			av_log(ic, AV_LOG_ERROR, "unknow audio codec id:%d", streamAudio->codecpar->codec_id);
 		}
 	}
+
 	ic->duration = 0;
+	ic->start_time = 0;
+	ic->bit_rate = 0;
+	ic->iformat->flags = 0;
+	ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
+
+	
 	AVPacket packet;
     av_init_packet(&packet);
 	av_log(ic, AV_LOG_ERROR, "------------------------------------1");
+	int packageCnt = 0;
     while (true)
     {
         av_read_frame(ic, &packet);
-        if (packet.flags & AV_PKT_FLAG_KEY)
+		av_log(ic, AV_LOG_ERROR, "Read Package: %d:%s", ++packageCnt, (packet.flags & AV_PKT_FLAG_KEY)?"TRUE frame":"NORMAL frame");
+        if (packet.flags & AV_PKT_FLAG_KEY) //检查是不是找到了关键帧
         {
             break;
         }
