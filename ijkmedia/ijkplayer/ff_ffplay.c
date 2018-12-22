@@ -3310,8 +3310,8 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 	ic->duration = 0;
 	ic->start_time = 0;
 	ic->bit_rate = 0;
-	ic->iformat->flags = 0;
-	ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
+	//ic->iformat->flags = 0;
+	//ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
 
 	
 	AVPacket packet;
