@@ -3170,8 +3170,14 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 			if(streamVideo != NULL) {
 				streamVideo->codecpar->width = 720;
 				streamVideo->codecpar->height = 576;
-				streamVideo->codecpar->format = 0;
-				streamVideo->codec->ticks_per_frame = 2;
+				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->profile = FF_PROFILE_H264_MAIN;
+				streamVideo->codecpar->codec_tag = 0x001B;
+				//streamVideo->codecpar->bits_per_raw_sample = 
+				//0x001B
+					
+
+				//streamVideo->codec->ticks_per_frame = 2;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 90000;
 				streamVideo->time_base.num = 1;
@@ -3182,7 +3188,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->sample_aspect_ratio.num = 16;
 				streamVideo->sample_aspect_ratio.den = 15;
 				streamVideo->codecpar->frame_size = 0;
-				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+
 				streamVideo->codecpar->profile = 66;
 				streamVideo->codecpar->level = 31;
 				streamVideo->avg_frame_rate.den = 1;
@@ -3530,7 +3536,7 @@ static int read_thread(void *arg)
 
     is->realtime = is_realtime(ic);
 
-    av_dump_format(ic, 0, is->filename, 0);
+    //av_dump_format(ic, 0, is->filename, 0);
 
     int video_stream_count = 0;
     int h264_stream_count = 0;
