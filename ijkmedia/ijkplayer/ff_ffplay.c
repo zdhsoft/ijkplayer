@@ -3192,14 +3192,6 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
-				/*
-				ic->duration = 0;
-				ic->start_time = 0;
-				ic->bit_rate = 0;
-				ic->iformat->flags = 0;
-				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
-				*/
-
 			}
 		}
 		break;
@@ -3210,8 +3202,9 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				streamVideo->codecpar->format = 0;
-				streamVideo->codec->ticks_per_frame = 2;
+				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->profile = FF_PROFILE_H264_MAIN;
+				//streamVideo->codec->ticks_per_frame = 2;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 90000;
 				streamVideo->time_base.num = 1;
@@ -3222,20 +3215,11 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->sample_aspect_ratio.num = 16;
 				streamVideo->sample_aspect_ratio.den = 15;
 				streamVideo->codecpar->frame_size = 0;
-				//streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				streamVideo->codecpar->profile = 66;
 				streamVideo->codecpar->level = 31;
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
-				/*
-				ic->duration = 0;
-				ic->start_time = 0;
-				ic->bit_rate = 0;
-				ic->iformat->flags = 0;
-				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;			
-				*/
-				
 			}
   
 		}
@@ -3248,8 +3232,9 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
-				streamVideo->codecpar->format = 0;
-				streamVideo->codec->ticks_per_frame = 2;
+				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+				streamVideo->codecpar->profile = FF_PROFILE_MPEG2_422;
+//				streamVideo->codec->ticks_per_frame = 2;
 				streamVideo->pts_wrap_bits = 32;
 				streamVideo->time_base.den = 90000;
 				streamVideo->time_base.num = 1;
@@ -3266,13 +3251,6 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
-				/*
-				ic->duration = 0;
-				ic->start_time = 0;
-				ic->bit_rate = 0;
-				ic->iformat->flags = 0;
-				ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;			
-				*/
 			}
 
 		}
@@ -3283,24 +3261,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 	}
 
 	if(streamAudio != NULL) {
-/*
-	streamAudio->time_base.den = 48000;
-					streamAudio->time_base.num = 1;
-					streamAudio->codecpar->bits_per_coded_sample = 16;
-					streamAudio->codecpar->channels = 1;
-					streamAudio->codecpar->channel_layout = 4;
-					streamAudio->pts_wrap_bits = 32;
-					streamAudio->time_base.den = 1000;
-					streamAudio->time_base.num = 1;
-					streamVideo->codecpar->bit_rate = 16000;
-					streamAudio->codec->refs = 1;
-					streamAudio->codecpar->profile = 1;
-					streamAudio->codecpar->level = 99;
-					streamAudio->pts_wrap_bits = 32;
-					streamAudio->time_base.den = 1000;
-					streamAudio->time_base.num = 1;
 
-	*/		
 		if(streamAudio->codecpar->codec_id == AV_CODEC_ID_MP2) {
      			streamAudio->codecpar->sample_rate = 48000;
 				streamAudio->codecpar->format = AV_SAMPLE_FMT_S16P;
@@ -3481,6 +3442,7 @@ static int read_thread(void *arg)
                     break;
                 }
             }
+/*			
 			av_log(NULL, AV_LOG_ERROR, "*************************************************************AAAA");
 			InitVideoDecoderByDSVParam(ic, &dsv_param); 
 			av_dump_format(ic, 0, is->filename, 0);
@@ -3488,9 +3450,9 @@ static int read_thread(void *arg)
 			avformat_find_stream_info(ic, opts); 
 			av_dump_format(ic, 0, is->filename, 0);
 			av_log(NULL, AV_LOG_ERROR, "*************************************************************CCCC");			
+*/			
 			
-			
-/*
+
 			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info*************");
 	            err = avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
@@ -3499,7 +3461,7 @@ static int read_thread(void *arg)
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* %d", dsv_param.program_type);
 				err = InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
 			}
-*/			
+			
         } while(0);
         ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO);
 
@@ -3548,7 +3510,7 @@ static int read_thread(void *arg)
 
     is->realtime = is_realtime(ic);
 
-    //av_dump_format(ic, 0, is->filename, 0);
+    av_dump_format(ic, 0, is->filename, 0);
 
     int video_stream_count = 0;
     int h264_stream_count = 0;
