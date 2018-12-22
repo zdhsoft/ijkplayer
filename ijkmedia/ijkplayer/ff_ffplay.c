@@ -3173,6 +3173,10 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				streamVideo->codecpar->profile = FF_PROFILE_H264_MAIN;
 				streamVideo->codecpar->codec_tag = 0x001B;
+				streamVideo->codecpar->chroma_location = AVCHROMA_LOC_LEFT;
+				streamVideo->codecpar->field_order = AV_FIELD_TT;
+				
+				
 				//streamVideo->codecpar->bits_per_raw_sample = 
 				//0x001B
 					
@@ -3305,23 +3309,28 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 	*/		
 		if(streamAudio->codecpar->codec_id == AV_CODEC_ID_MP2) {
      			streamAudio->codecpar->sample_rate = 48000;
+				streamAudio->codecpar->format = AV_SAMPLE_FMT_S16P;
+		
 				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
-				streamAudio->codecpar->bits_per_coded_sample = 16;
-				streamAudio->codecpar->channels = 1;
-				streamAudio->codecpar->channel_layout = 4;
-				streamAudio->pts_wrap_bits = 32;
+				//streamAudio->codecpar->bits_per_coded_sample = 16;
+				streamAudio->codecpar->channels = 2;
+				streamAudio->codecpar->channel_layout = 2;
+				
+				//streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
 				streamAudio->time_base.num = 1;			
 		}
 		else if(streamAudio->codecpar->codec_id == AV_CODEC_ID_AC3) {
      			streamAudio->codecpar->sample_rate = 48000;
+				streamAudio->codecpar->format = AV_SAMPLE_FMT_FLTP;
+		
 				streamAudio->time_base.den = 48000;
 				streamAudio->time_base.num = 1;
-				streamAudio->codecpar->bits_per_coded_sample = 16;
+				//streamAudio->codecpar->bits_per_coded_sample = 16;
 				streamAudio->codecpar->channels = 2;
-				streamAudio->codecpar->channel_layout = 3;
-				streamAudio->pts_wrap_bits = 32;
+				streamAudio->codecpar->channel_layout = 63;
+				//streamAudio->pts_wrap_bits = 32;
 				streamAudio->time_base.den = 1000;
 				streamAudio->time_base.num = 1;				
 		}
