@@ -3170,6 +3170,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 			if(streamVideo != NULL) {
 				streamVideo->codecpar->width = 720;
 				streamVideo->codecpar->height = 576;
+/*			
 				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				streamVideo->codecpar->profile = FF_PROFILE_H264_MAIN;
 				streamVideo->codecpar->codec_tag = 0x001B;
@@ -3192,6 +3193,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
+*/				
 			}
 		}
 		break;
@@ -3202,6 +3204,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_H264;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
+/*			
 				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				streamVideo->codecpar->profile = FF_PROFILE_H264_MAIN;
 				//streamVideo->codec->ticks_per_frame = 2;
@@ -3220,6 +3223,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
+*/				
 			}
   
 		}
@@ -3232,6 +3236,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				//streamVideo->codecpar->codec_id = AV_CODEC_ID_MPEG2VIDEO;
 				streamVideo->codecpar->width = 1920;
 				streamVideo->codecpar->height = 1080;
+/*
 				streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 				streamVideo->codecpar->profile = FF_PROFILE_MPEG2_422;
 //				streamVideo->codec->ticks_per_frame = 2;
@@ -3251,6 +3256,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 				streamVideo->avg_frame_rate.den = 1;
 				streamVideo->avg_frame_rate.num = 25;
 				av_dict_set(&(ic->metadata), "encoder", "avf57.0.100", 0);
+*/				
 			}
 
 		}
@@ -3260,9 +3266,9 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		break;
 	}
 	if(streamVideo != NULL) {
-		DSVVideoExtradata(ic, video_index);
+		//DSVVideoExtradata(ic, video_index);
 	}
-
+	streamAudio = NULL;
 	if(streamAudio != NULL) {
 
 		if(streamAudio->codecpar->codec_id == AV_CODEC_ID_MP2) {
