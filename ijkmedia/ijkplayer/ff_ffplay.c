@@ -3078,7 +3078,46 @@ void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
 	}
 }
 
+void CopySPS_PPS(AVFormatContext *s) {
 
+	int video_index = -1;
+	for(int i = 0; i < ic->nb_streams; i++) {
+		AVStream * st = ic->streams[i];
+		if(st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+			video_index = i;
+			break;
+		}
+	}
+
+	if(video_index == -1) {
+		return;
+	}
+
+	AVStream * streamVideo = s->streams[video_index];
+	if(streamVideo == NULL) {
+		return;
+	}
+	
+	
+	if(streamVideo->codecpar->codec_id != AV_CODEC_ID_H264) {
+		return;
+	}
+
+
+	
+	streamVideo->codecpar->extradata;
+	
+	unsigned char sps_pps[23] = { 0x00, 0x00, 0x00, 0x01, 0x67, 0x42, 0x00, 0x0a, 0xf8, 0x0f, 0x00, 0x44, 0xbe, 0x8,
+					  0x00, 0x00, 0x00, 0x01, 0x68, 0xce, 0x38, 0x80 }; 
+	streamVideo->codecpar->extradata_size = 23;
+	streamVideo->codecpar->extradata = (uint8_t*)av_malloc(23 + AV_INPUT_BUFFER_PADDING_SIZE);
+	if (streamVideo->codecpar->extradata == NULL) {
+		printf("could not av_malloc the video params extradata!\n");
+		return；
+	}
+	memcpy(streamVideo->codecpar->extradata, sps_pps, 23);
+
+}
 
 
 int DSVVideoExtradata(AVFormatContext *s, int video_index)
@@ -3467,11 +3506,13 @@ static int read_thread(void *arg)
 
 			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info*************");
+				CopySPS_PPS(ic);
 	            err = avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 			}
 			else {
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* <<<<< %d", dsv_param.program_type);
 				err = InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				CopySPS_PPS(ic);
 				err = avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* >>>>> %d", dsv_param.program_type);
 			}
