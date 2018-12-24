@@ -3080,6 +3080,8 @@ void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
 
 int CopySPS_PPS(AVFormatContext *ic) {
 
+	return 0;
+
 	int video_index = -1;
 	for(int i = 0; i < ic->nb_streams; i++) {
 		AVStream * st = ic->streams[i];
