@@ -3113,10 +3113,9 @@ void CopySPS_PPS(AVFormatContext *ic) {
 	streamVideo->codecpar->extradata = (uint8_t*)av_malloc(23 + AV_INPUT_BUFFER_PADDING_SIZE);
 	if (streamVideo->codecpar->extradata == NULL) {
 		printf("could not av_malloc the video params extradata!\n");
-		return；
+		return;
 	}
 	memcpy(streamVideo->codecpar->extradata, sps_pps, 23);
-
 }
 
 
