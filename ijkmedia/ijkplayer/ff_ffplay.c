@@ -3078,7 +3078,7 @@ void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
 	}
 }
 
-void CopySPS_PPS(AVFormatContext *s) {
+void CopySPS_PPS(AVFormatContext *ic) {
 
 	int video_index = -1;
 	for(int i = 0; i < ic->nb_streams; i++) {
@@ -3093,7 +3093,7 @@ void CopySPS_PPS(AVFormatContext *s) {
 		return;
 	}
 
-	AVStream * streamVideo = s->streams[video_index];
+	AVStream * streamVideo = ic->streams[video_index];
 	if(streamVideo == NULL) {
 		return;
 	}
