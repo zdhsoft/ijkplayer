@@ -2944,6 +2944,8 @@ static int stream_component_open(FFPlayer *ffp, int stream_index)
         SDL_AoutPauseAudio(ffp->aout, 0);
         break;
     case AVMEDIA_TYPE_VIDEO:
+		av_log(NULL, AV_LOG_ERROR, "********************************** open thread count = %d",8);
+		avctx->thread_count = 8;
         is->video_stream = stream_index;
         is->video_st = ic->streams[stream_index];
 
