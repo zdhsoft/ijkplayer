@@ -3080,6 +3080,27 @@ void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
 	}
 }
 
+void AutoSetOptions(AVFormatContext * ic, FFPlayer * ffp) {
+	AVStream * stVideo = NULL;
+	for(int i = 0; i < ic->nb_streams; i++) {
+		AVStream * st = ic->streams[i];
+		if(st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
+			stVideo = st;
+			break;
+		}
+	}
+	if(stVideo == NULL) {
+		return;
+	}
+
+	av_log(ic, AV_LOG_ERROR, "******************** (%d,%d)", stVideo->codecpar->width, stVideo->codec->height);
+	if(stVideo->codecpar->width > 720) {
+		//ffp_context_options[]
+	}
+
+}
+
+
 int CopySPS_PPS(AVFormatContext *ic) {
 
 	return 0;
@@ -3526,6 +3547,8 @@ static int read_thread(void *arg)
 				//av_log(NULL, AV_LOG_ERROR, "dd CopySPS_PPS = %d",CopySPS_PPS(ic));
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* >>>>> %d", dsv_param.program_type);
 			}
+			AutoSetOptions(ic, ffp);
+			
 			
         } while(0);
         ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO);
