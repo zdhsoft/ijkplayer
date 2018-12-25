@@ -3380,10 +3380,11 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
         {
             break;
         }
+		if(packageCnt >= 200) {
+			break;
+		}
     }
-	//av_log(ic, AV_LOG_ERROR, "------------------------------------2");
     add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
-	//av_log(ic, AV_LOG_ERROR, "------------------------------------3");
 	ic->pb->pos = (int64_t)ic->pb->buf_end;
 	return 0;
 }
@@ -3510,6 +3511,7 @@ static int read_thread(void *arg)
 			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* <<<<");
 				//av_log(NULL, AV_LOG_ERROR, "aa CopySPS_PPS = %d",CopySPS_PPS(ic));
+				err = InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
 	            err = avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 				//av_log(NULL, AV_LOG_ERROR, "bb CopySPS_PPS = %d",CopySPS_PPS(ic));
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* >>>>");
