@@ -2874,6 +2874,8 @@ static int stream_component_open(FFPlayer *ffp, int stream_index)
         av_dict_set_int(&opts, "lowres", stream_lowres, 0);
     if (avctx->codec_type == AVMEDIA_TYPE_VIDEO || avctx->codec_type == AVMEDIA_TYPE_AUDIO)
         av_dict_set(&opts, "refcounted_frames", "1", 0);
+	
+	avctx->thread_count = 8;
     if ((ret = avcodec_open2(avctx, codec, &opts)) < 0) {
         goto fail;
     }
@@ -2944,7 +2946,6 @@ static int stream_component_open(FFPlayer *ffp, int stream_index)
         SDL_AoutPauseAudio(ffp->aout, 0);
         break;
     case AVMEDIA_TYPE_VIDEO:
-		avctx->thread_count = 8;
         is->video_stream = stream_index;
         is->video_st = ic->streams[stream_index];
 
