@@ -154,7 +154,6 @@ void InitDSVParam(TDSVParam * param);
 void GetDSVParam(AVDictionary * opts, TDSVParam * param);
 AVPacket *add_to_pktbuf(AVPacketList **packet_buffer, AVPacket *pkt, AVPacketList **plast_pktl);
 int CopySPS_PPS(AVFormatContext *ic);
-void AutoSetOptions(AVFormatContext * ic, FFPlayer * ffp);
 
 
 

@@ -2944,7 +2944,6 @@ static int stream_component_open(FFPlayer *ffp, int stream_index)
         SDL_AoutPauseAudio(ffp->aout, 0);
         break;
     case AVMEDIA_TYPE_VIDEO:
-		av_log(NULL, AV_LOG_ERROR, "********************************** open thread count = %d",8);
 		avctx->thread_count = 8;
         is->video_stream = stream_index;
         is->video_st = ic->streams[stream_index];
@@ -3080,25 +3079,6 @@ void GetDSVParam(AVDictionary * opts, TDSVParam * param) {
 	}
 }
 
-void AutoSetOptions(AVFormatContext * ic, FFPlayer * ffp) {
-	AVStream * stVideo = NULL;
-	for(int i = 0; i < ic->nb_streams; i++) {
-		AVStream * st = ic->streams[i];
-		if(st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
-			stVideo = st;
-			break;
-		}
-	}
-	if(stVideo == NULL) {
-		return;
-	}
-
-	av_log(ic, AV_LOG_ERROR, "******************** (%d,%d)", stVideo->codecpar->width, stVideo->codec->height);
-	if(stVideo->codecpar->width > 720) {
-		//ffp_context_options[]
-	}
-
-}
 
 
 int CopySPS_PPS(AVFormatContext *ic) {
@@ -3547,7 +3527,6 @@ static int read_thread(void *arg)
 				//av_log(NULL, AV_LOG_ERROR, "dd CopySPS_PPS = %d",CopySPS_PPS(ic));
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* >>>>> %d", dsv_param.program_type);
 			}
-			AutoSetOptions(ic, ffp);
 			
 			
         } while(0);
