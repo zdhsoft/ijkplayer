@@ -3315,7 +3315,13 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		break;
 	}
 	if(streamVideo != NULL) {
-		//DSVVideoExtradata(ic, video_index);
+		streamVideo->avg_frame_rate.den = 3;
+		streamVideo->avg_frame_rate.num = 75;
+		streamVideo->r_frame_rate.den = 3;
+		streamVideo->r_frame_rate.num = 75;
+		streamVideo->avg_frame_rate.den = 1;
+		streamVideo->avg_frame_rate.num = 25;				
+		streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 	}
 	streamAudio = NULL;
 	if(streamAudio != NULL) {
