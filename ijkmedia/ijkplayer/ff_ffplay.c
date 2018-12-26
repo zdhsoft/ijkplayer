@@ -3215,6 +3215,7 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 	int t = param->program_type;
 	if(t == 1) {
  		if(streamVideo != NULL) {
+/*
 			streamVideo->avg_frame_rate.num = 25;
 			streamVideo->avg_frame_rate.den = 1;
 			streamVideo->codec_info_nb_frames = 21;
@@ -3235,27 +3236,28 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 			p->chroma_location = 1;
 			p->video_delay = 2;
 			
+*/
 			int extradata_size=51;
 			uint8_t extradata[] = {0x00, 0x00, 0x01, 0x67, 0x4d, 0x40, 0x28, 0xec, 0xa0, 0x5a, 0x09, 0x37, 0xfe, 0x00, 0x20, 0x00, 0x1e, 0x20, 0x00, 0x00, 0x03, 0x00, 0x20, 0x00, 0x00, 0x06, 0x5c, 0x00, 0x00, 0x04, 0x30, 0x40, 0x00, 0x04, 0x30, 0x47, 0x14, 0x98, 0x03, 0xc6, 0x0c, 0x65, 0x80, 0x00, 0x00, 0x00, 0x01, 0x68, 0xeb, 0xec, 0xb2};
-			copy_extradata(p, extradata, extradata_size);			
+			copy_extradata(streamVideo->codecpar, extradata, extradata_size);			
 			//
  		}
 		if(streamAudio != NULL) {
-			streamAudio->avg_frame_rate.num = 0;
-			streamAudio->avg_frame_rate.den = 0;
-			streamAudio->codec_info_nb_frames = 35;
-			streamAudio->r_frame_rate.num = 0;
-			streamAudio->r_frame_rate.den = 0;
+			//streamAudio->avg_frame_rate.num = 0;
+			//streamAudio->avg_frame_rate.den = 0;
+			//streamAudio->codec_info_nb_frames = 35;
+			//streamAudio->r_frame_rate.num = 0;
+			//streamAudio->r_frame_rate.den = 0;
 			AVCodecParameters * p = streamVideo->codecpar;
-			p->format = AV_SAMPLE_FMT_S16P;
-			p->bit_rate = 128000;
-			p->bits_per_coded_sample = 0;
-			p->bits_per_raw_sample = 0;
-			p->channel_layout = 3;
-			p->channels = 2;
+			//p->format = AV_SAMPLE_FMT_S16P;
+			//p->bit_rate = 128000;
+			//p->bits_per_coded_sample = 0;
+			//p->bits_per_raw_sample = 0;
+			//p->channel_layout = 3;
+			//p->channels = 2;
 			p->sample_rate = 48000;
-			p->block_align = 0;
-			p->frame_size = 1152;
+			//p->block_align = 0;
+			//p->frame_size = 1152;
 		}
 		
 	}
