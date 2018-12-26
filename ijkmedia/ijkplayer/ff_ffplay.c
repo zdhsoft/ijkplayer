@@ -3394,6 +3394,10 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 			p->frame_size = 1152;
 		}			
 	}
+	if(streamVideo != NULL && streamVideo->internal != NULL && streamVideo->internal->avctx != NULL) {
+		av_log(NULL, AV_LOG_ERROR, "********* avcodec_parameters_to_context");
+		avcodec_parameters_to_context(streamVideo->internal->avctx, streamVideo->codecpar);
+	}
 
 }
 
