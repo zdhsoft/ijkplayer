@@ -154,6 +154,9 @@ void InitDSVParam(TDSVParam * param);
 void GetDSVParam(AVDictionary * opts, TDSVParam * param);
 AVPacket *add_to_pktbuf(AVPacketList **packet_buffer, AVPacket *pkt, AVPacketList **plast_pktl);
 int CopySPS_PPS(AVFormatContext *ic);
+int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param);
+void copy_extradata(AVCodecParameters *p, uint8_t * extradata, int extradata_size);
+
 
 
 
