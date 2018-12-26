@@ -3623,7 +3623,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 	if(findKey == 1) {
 		
 	}
-	av_packet_unref(&avpkt);
+	av_packet_unref(&packet);
     //add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
 	//ic->pb->pos = (int64_t)ic->pb->buf_end;
 	return 0;
