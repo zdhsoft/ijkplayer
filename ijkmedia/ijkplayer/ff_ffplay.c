@@ -3203,10 +3203,12 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
  	//查找视频流
 	AVStream * streamVideo = NULL;
 	AVStream * streamAudio = NULL;
+	int video_index = -1;
 	for(int i = 0; i < ic->nb_streams; i++) {
 		AVStream * st = ic->streams[i];
 		if(st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO) {
 			streamVideo = st;
+			video_index = i;
 		}
 		else if(st->codecpar->codec_type == AVMEDIA_TYPE_AUDIO) {
 			streamAudio = st;
