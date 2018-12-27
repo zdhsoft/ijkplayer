@@ -3405,7 +3405,7 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 	if(streamVideo != NULL) {
 		streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
 		streamVideo->avg_frame_rate = { num:25, den:1 };
-		streamVideo.r_frame_rate = { num:25, den:1 };
+		streamVideo->r_frame_rate = { num:25, den:1 };
 	}
 /*	
 	if(streamVideo != NULL && streamVideo->internal != NULL && streamVideo->internal->avctx != NULL) {
