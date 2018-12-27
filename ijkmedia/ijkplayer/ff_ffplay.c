@@ -3416,7 +3416,7 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 	}
 */
 	//ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
-
+/*
 	AVPacket packet;
     av_init_packet(&packet);
 	av_log(ic, AV_LOG_ERROR, "------------------------------------1");
@@ -3441,7 +3441,7 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 		ic->pb->pos = (int64_t)ic->pb->buf_end;		
 	}
 	av_packet_unref(&packet);	
-
+*/
 }
 
 /**
