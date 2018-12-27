@@ -3678,7 +3678,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 /* this thread gets the stream from the disk or the network */
 static int read_thread(void *arg)
 {
-	av_log(NULL, AV_LOG_ERROR, "********** read_thread start===>thread id=[%d] OS Level=%d", (int)gettid(), SDL_Android_GetApiLevel());
+	av_log(NULL, AV_LOG_ERROR, "********** read_thread start===>thread id=[%d]", (int)gettid());
     FFPlayer *ffp = arg;
     VideoState *is = ffp->is;
     AVFormatContext *ic = NULL;
@@ -3786,14 +3786,16 @@ static int read_thread(void *arg)
 			
 
 			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
-				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* <<<<");
-				//InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* <<<<aaa");
+				InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* <<<<bbb");
 	            avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* >>>>");
 			}
 			else {
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* <<<<< %d", dsv_param.program_type);
-				//InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* <<<<bbbb");
 				avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* >>>>> %d", dsv_param.program_type);
 			}
