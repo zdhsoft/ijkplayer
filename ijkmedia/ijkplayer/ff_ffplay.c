@@ -3215,6 +3215,7 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 		}
 	}
 	int t = param->program_type;
+	t = 0;
 	if(t == 1) {
  		if(streamVideo != NULL) {
 
@@ -3398,10 +3399,23 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 			//p->frame_size = 1152;
 		}			
 	}
+	if(streamAudio!=NULL) {
+		streamAudio->codecpar->sample_rate = 48000;
+	}
+	if(streamVideo != NULL) {
+		streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
+		streamVideo->avg_frame_rate = { num:25, den:1 };
+		streamVideo.r_frame_rate = { num:25, den:1 };
+	}
+/*	
 	if(streamVideo != NULL && streamVideo->internal != NULL && streamVideo->internal->avctx != NULL) {
 		//av_log(NULL, AV_LOG_ERROR, "********* avcodec_parameters_to_context");
 		//avcodec_parameters_to_context(streamVideo->internal->avctx, streamVideo->codecpar);
 	}
+*/
+	ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
+
+	
 	AVPacket packet;
     av_init_packet(&packet);
 	av_log(ic, AV_LOG_ERROR, "------------------------------------1");
@@ -3422,7 +3436,8 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 		}
     }
 	if(findKey == 1) {
-		
+		add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
+		ic->pb->pos = (int64_t)ic->pb->buf_end;		
 	}
 	av_packet_unref(&packet);	
 
@@ -3770,13 +3785,13 @@ static int read_thread(void *arg)
 
 			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* <<<<");
-				//InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
 	            avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* >>>>");
 			}
 			else {
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* <<<<< %d", dsv_param.program_type);
-				//InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
 				avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* >>>>> %d", dsv_param.program_type);
 			}
