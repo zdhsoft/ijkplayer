@@ -3628,7 +3628,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 	//ic->iformat->flags = 0;
 	ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
 
-/*	
+	
 	AVPacket packet;
     av_init_packet(&packet);
 	av_log(ic, AV_LOG_ERROR, "------------------------------------1");
@@ -3649,12 +3649,11 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 		}
     }
 	if(findKey == 1) {
-		
+		add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
+		ic->pb->pos = (int64_t)ic->pb->buf_end;
 	}
-*/	
+	
 	av_packet_unref(&packet);
-    //add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
-	//ic->pb->pos = (int64_t)ic->pb->buf_end;
 	return 0;
 }
 
