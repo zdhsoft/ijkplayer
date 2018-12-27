@@ -3400,6 +3400,29 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 		//av_log(NULL, AV_LOG_ERROR, "********* avcodec_parameters_to_context");
 		//avcodec_parameters_to_context(streamVideo->internal->avctx, streamVideo->codecpar);
 	}
+	AVPacket packet;
+    av_init_packet(&packet);
+	av_log(ic, AV_LOG_ERROR, "------------------------------------1");
+	int packageCnt = 0;
+	int findKey = 0;
+    while (true)
+    {
+        av_read_frame(ic, &packet);
+		av_log(ic, AV_LOG_ERROR, "Read Package: %d:%s", ++packageCnt, (packet.flags & AV_PKT_FLAG_KEY)?"TRUE frame":"NORMAL frame");
+        if (packet.stream_index == video_index && packet.flags & AV_PKT_FLAG_KEY) //检查是不是找到了关键帧
+        {
+        	//如果找到了视频流的关键帧
+        	findKey = 1;
+            break;
+        }
+		if(packageCnt >= 200) {
+			break;
+		}
+    }
+	if(findKey == 1) {
+		
+	}
+	av_packet_unref(&packet);	
 
 }
 
