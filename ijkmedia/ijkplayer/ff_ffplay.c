@@ -3770,13 +3770,13 @@ static int read_thread(void *arg)
 
 			if(dsv_param.program_type == DSV_PROGRAM_TYPE_NONE) {
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* <<<<");
-				InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				//InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
 	            avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 				av_log(NULL, AV_LOG_ERROR, "*******************avformat_find_stream_info************* >>>>");
 			}
 			else {
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* <<<<< %d", dsv_param.program_type);
-				InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
+				//InitVideoDecoderByDSVParam(ic, &dsv_param); //使用预处理的方案
 				avformat_find_stream_info(ic, opts);  //如果不是预置的，则启动侦测
 				av_log(NULL, AV_LOG_ERROR, "*******************InitVideoDecoderByDSVParam************* >>>>> %d", dsv_param.program_type);
 			}
