@@ -3404,10 +3404,10 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 	}
 	if(streamVideo != NULL) {
 		streamVideo->codecpar->format = AV_PIX_FMT_YUV420P;
-		streamVideo->avg_frame_rate.num = 25;// = { num:25, den:1 };
-		streamVideo->avg_frame_rate.den = 1;// = { num:25, den:1 };
-		streamVideo->r_frame_rate.num = 25;// = { num:25, den:1 };
-		streamVideo->r_frame_rate.den = 1;// = { num:25, den:1 };
+		//streamVideo->avg_frame_rate.num = 25;// = { num:25, den:1 };
+		//streamVideo->avg_frame_rate.den = 1;// = { num:25, den:1 };
+		//streamVideo->r_frame_rate.num = 25;// = { num:25, den:1 };
+		//streamVideo->r_frame_rate.den = 1;// = { num:25, den:1 };
 	}
 /*	
 	if(streamVideo != NULL && streamVideo->internal != NULL && streamVideo->internal->avctx != NULL) {
@@ -3415,9 +3415,8 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 		//avcodec_parameters_to_context(streamVideo->internal->avctx, streamVideo->codecpar);
 	}
 */
-	ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
+	//ic->duration_estimation_method = AVFMT_DURATION_FROM_STREAM;
 
-	
 	AVPacket packet;
     av_init_packet(&packet);
 	av_log(ic, AV_LOG_ERROR, "------------------------------------1");
@@ -3438,8 +3437,8 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 		}
     }
 	if(findKey == 1) {
-		//add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
-		//ic->pb->pos = (int64_t)ic->pb->buf_end;		
+		add_to_pktbuf(&(ic->internal->packet_buffer), &packet, &(ic->internal->packet_buffer_end));
+		ic->pb->pos = (int64_t)ic->pb->buf_end;		
 	}
 	av_packet_unref(&packet);	
 
