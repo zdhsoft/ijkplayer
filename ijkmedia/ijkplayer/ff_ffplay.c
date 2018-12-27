@@ -3661,7 +3661,7 @@ int InitVideoDecoderByDSVParam(AVFormatContext * ic, TDSVParam * param) {
 /* this thread gets the stream from the disk or the network */
 static int read_thread(void *arg)
 {
-	av_log(NULL, AV_LOG_ERROR, "********** read_thread start===>thread id=[%d]", (int)gettid());
+	av_log(NULL, AV_LOG_ERROR, "********** read_thread start===>thread id=[%d] OS Level=%d", (int)gettid(), SDL_Android_GetApiLevel());
     FFPlayer *ffp = arg;
     VideoState *is = ffp->is;
     AVFormatContext *ic = NULL;
