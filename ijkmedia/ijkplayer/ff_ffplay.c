@@ -3445,6 +3445,7 @@ int InitVideoDecoderByDSVParamEx(AVFormatContext * ic, TDSVParam * param) {
 	}
 	av_packet_unref(&packet);	
 */
+	return 0;
 }
 
 /**
