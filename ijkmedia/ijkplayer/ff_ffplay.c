@@ -3184,7 +3184,7 @@ static int read_thread(void *arg)
 				AVStream * st = ic->streams[i];
 				if(st != NULL) {
 					if(st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
-					av_log(NULL, AV_LOG_INFO, "AVMEDIA_TYPE_VIDEO[%d] codec_id=%d, profile=%d, level=%d, width=%d, height=%d", st->codecpar->codec_id, st->codecpar->profile, st->codecpar->level, st->codecpar->width, st->codecpar->height);
+					av_log(NULL, AV_LOG_INFO, "AVMEDIA_TYPE_VIDEO[%d] codec_id=%d, profile=%d, level=%d, width=%d, height=%d", i, st->codecpar->codec_id, st->codecpar->profile, st->codecpar->level, st->codecpar->width, st->codecpar->height);
 				}
 			}
 		}
