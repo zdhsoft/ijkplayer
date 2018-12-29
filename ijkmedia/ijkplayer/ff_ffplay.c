@@ -2868,7 +2868,8 @@ static int stream_component_open(FFPlayer *ffp, int stream_index)
 
     opts = filter_codec_opts(ffp->codec_opts, avctx->codec_id, ic, ic->streams[stream_index], codec);
     if (!av_dict_get(opts, "threads", NULL, 0))
-        av_dict_set(&opts, "threads", "auto", 0);
+        //av_dict_set(&opts, "threads", "auto", 0);
+        av_dict_set(&opts, "threads", "8", 0);
     if (stream_lowres)
         av_dict_set_int(&opts, "lowres", stream_lowres, 0);
     if (avctx->codec_type == AVMEDIA_TYPE_VIDEO || avctx->codec_type == AVMEDIA_TYPE_AUDIO)

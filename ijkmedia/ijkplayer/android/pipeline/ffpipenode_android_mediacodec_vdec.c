@@ -544,7 +544,7 @@ static int feed_input_buffer2(JNIEnv *env, IJKFF_Pipenode *node, int64_t timeUs,
                 memcpy(new_avctx->extradata, size_data, size_data_size);
                 new_avctx->extradata_size = size_data_size;
 
-                av_dict_set(&codec_opts, "threads", "1", 0);
+                av_dict_set(&codec_opts, "threads", "8", 0);
                 change_ret = avcodec_open2(new_avctx, codec, &codec_opts);
                 av_dict_free(&codec_opts);
                 if (change_ret < 0) {
@@ -791,7 +791,7 @@ static int feed_input_buffer(JNIEnv *env, IJKFF_Pipenode *node, int64_t timeUs, 
                 memcpy(new_avctx->extradata, size_data, size_data_size);
                 new_avctx->extradata_size = size_data_size;
 
-                av_dict_set(&codec_opts, "threads", "1", 0);
+                av_dict_set(&codec_opts, "threads", "8", 0);
                 change_ret = avcodec_open2(new_avctx, codec, &codec_opts);
                 av_dict_free(&codec_opts);
                 if (change_ret < 0) {
