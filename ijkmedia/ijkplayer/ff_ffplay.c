@@ -3069,7 +3069,7 @@ static calc_fps(AVRational * r) {
 static void dsv_reset_fps(AVStream * st) {
 	if(st == NULL) return;
 	if(st->codecpar->codec_type!= AVMEDIA_TYPE_VIDEO) return;
-	av_log(NULL, AV_LOG_ERROR,"*** avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
+	av_log(NULL, AV_LOG_ERROR,"aaa*** avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
 	int r1 = calc_fps(st->avg_frame_rate);	
 	int r2 = calc_fps(st->r_frame_rate);
 	if(r1 <=0 || r1 > 60) {
@@ -3080,6 +3080,7 @@ static void dsv_reset_fps(AVStream * st) {
 		st->r_frame_rate.num = 25;
 		st->r_frame_rate.den = 1;
 	}
+	av_log(NULL, AV_LOG_ERROR,"bbb*** avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
 }
 
 /* this thread gets the stream from the disk or the network */
@@ -3188,7 +3189,7 @@ static int read_thread(void *arg)
                     break;
                 }
             }
-            err = avformat_find_stream_info(ic, opts);
+            //err = avformat_find_stream_info(ic, opts);
         } while(0);
         ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO);
 
