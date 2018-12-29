@@ -2967,6 +2967,16 @@ static int stream_component_open(FFPlayer *ffp, int stream_index)
             if (!ffp->node_vdec)
                 goto fail;
         }
+		AVStream * st = is->video_st;
+		if(st->avg_frame_rate.num <= 0 || st->avg_frame_rate.den <= 0) {
+			st->avg_frame_rate.num = 25;
+			st->avg_frame_rate.den = 1;
+		}
+		if(st->r_frame_rate.num <= 0 || st->r_frame_rate.den <= 0) {
+			st->r_frame_rate.num = 25;
+			st->r_frame_rate.den = 1;
+		}
+		
         if ((ret = decoder_start(&is->viddec, video_thread, ffp, "ff_video_dec")) < 0)
             goto out;
 
