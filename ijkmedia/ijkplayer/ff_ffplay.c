@@ -2967,16 +2967,7 @@ static int stream_component_open(FFPlayer *ffp, int stream_index)
             if (!ffp->node_vdec)
                 goto fail;
         }
-		AVStream * st = is->video_st;
-		av_log(NULL, AV_LOG_ERROR,"avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
-		if(st->avg_frame_rate.num <= 0 || st->avg_frame_rate.den <= 0) {
-			st->avg_frame_rate.num = 25;
-			st->avg_frame_rate.den = 1;
-		}
-		if(st->r_frame_rate.num <= 0 || st->r_frame_rate.den <= 0) {
-			st->r_frame_rate.num = 25;
-			st->r_frame_rate.den = 1;
-		}
+		dsv_reset_fps(is->video_st);
 		
         if ((ret = decoder_start(&is->viddec, video_thread, ffp, "ff_video_dec")) < 0)
             goto out;
@@ -3067,6 +3058,28 @@ static int is_realtime(AVFormatContext *s)
     )
         return 1;
     return 0;
+}
+
+static calc_fps(AVRational * r) {
+	if(r.den <= 0) return -1;
+	if(r.num <= 0) return -2;
+	return r.num / r.den;
+}
+
+static void dsv_reset_fps(AVStream * st) {
+	if(st == NULL) return;
+	if(st->codecpar->codec_type!= AVMEDIA_TYPE_VIDEO) return;
+	av_log(NULL, AV_LOG_ERROR,"*** avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
+	int r1 = calc_fps(st->avg_frame_rate);	
+	int r2 = calc_fps(st->r_frame_rate);
+	if(r1 <=0 || r1 > 60) {
+		st->avg_frame_rate.num = 25;
+		st->avg_frame_rate.den = 1;
+	}
+	if(r2 <= 0 || r2 > 60) {
+		st->r_frame_rate.num = 25;
+		st->r_frame_rate.den = 1;
+	}
 }
 
 /* this thread gets the stream from the disk or the network */
@@ -3265,17 +3278,11 @@ static int read_thread(void *arg)
 
 		if(st->codecpar->codec_type != AVMEDIA_TYPE_VIDEO)	
 			continue;
+
 		
-		av_log(NULL, AV_LOG_ERROR,"*** avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
-		if(st->avg_frame_rate.num <= 0 || st->avg_frame_rate.den <= 0) {
-			st->avg_frame_rate.num = 25;
-			st->avg_frame_rate.den = 1;
-		}
-		if(st->r_frame_rate.num <= 0 || st->r_frame_rate.den <= 0) {
-			st->r_frame_rate.num = 25;
-			st->r_frame_rate.den = 1;
-		}
-		
+		dsv_reset_fps(st);
+
+
 		//av_log(NULL, AV_LOG_ERROR,"avg_frame_rate(%d/%d:%d), r_frame_rate(%d/%d:%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->avg_frame_rate.den?st->avg_frame_rate.num/st->avg_frame_rate.den:-1 , st->r_frame_rate.num, st->r_frame_rate.den?st->r_frame_rate.den,st->r_frame_rate.num/st->r_frame_rate.den:-1);
 	}
 	
