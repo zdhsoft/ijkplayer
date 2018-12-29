@@ -3060,7 +3060,7 @@ static int is_realtime(AVFormatContext *s)
     return 0;
 }
 
-static calc_fps(AVRational * r) {
+static int calc_fps(AVRational * r) {
 	if(r->den <= 0) return -1;
 	if(r->num <= 0) return -2;
 	return r->num / r->den;
