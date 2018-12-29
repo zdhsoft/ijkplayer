@@ -3061,17 +3061,17 @@ static int is_realtime(AVFormatContext *s)
 }
 
 static calc_fps(AVRational * r) {
-	if(r.den <= 0) return -1;
-	if(r.num <= 0) return -2;
-	return r.num / r.den;
+	if(r->den <= 0) return -1;
+	if(r->num <= 0) return -2;
+	return r->num / r->den;
 }
 
 static void dsv_reset_fps(AVStream * st) {
 	if(st == NULL) return;
 	if(st->codecpar->codec_type!= AVMEDIA_TYPE_VIDEO) return;
 	av_log(NULL, AV_LOG_ERROR,"aaa*** avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
-	int r1 = calc_fps(st->avg_frame_rate);	
-	int r2 = calc_fps(st->r_frame_rate);
+	int r1 = calc_fps(&st->avg_frame_rate);	
+	int r2 = calc_fps(&st->r_frame_rate);
 	if(r1 <=0 || r1 > 60) {
 		st->avg_frame_rate.num = 25;
 		st->avg_frame_rate.den = 1;
