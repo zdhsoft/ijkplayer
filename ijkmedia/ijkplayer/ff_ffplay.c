@@ -3172,8 +3172,10 @@ static int read_thread(void *arg)
         av_freep(&opts);
 
         if (err < 0) {
+			char tmp[1024];
+			
             av_log(NULL, AV_LOG_WARNING,
-                   "%s: could not find codec parameters\n", is->filename);
+                   "%s: could not find codec parameters  errormsg:%s\n", is->filename, av_strerror(err, tmp, 1024));
             ret = -1;
             goto fail;
         }
