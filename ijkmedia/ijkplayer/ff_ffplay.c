@@ -3253,7 +3253,7 @@ static int read_thread(void *arg)
 		if(st == NULL) 
 			continue;
 		
-		av_log(NULL, AV_LOG_ERROR,"avg_frame_rate(%d/%d:%d), r_frame_rate(%d/%d:%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->avg_frame_rate.num/st->avg_frame_rate.den , st->r_frame_rate.num, st->r_frame_rate.den,st->r_frame_rate.num/st->r_frame_rate.den);
+		av_log(NULL, AV_LOG_ERROR,"avg_frame_rate(%d/%d:%d), r_frame_rate(%d/%d:%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->avg_frame_rate.den?st->avg_frame_rate.num/st->avg_frame_rate.den:-1 , st->r_frame_rate.num, st->r_frame_rate.den?st->r_frame_rate.den,st->r_frame_rate.num/st->r_frame_rate.den:-1);
 	}
 	
     if (video_stream_count > 1 && st_index[AVMEDIA_TYPE_VIDEO] < 0) {
