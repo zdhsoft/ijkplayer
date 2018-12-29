@@ -3179,6 +3179,15 @@ static int read_thread(void *arg)
             ret = -1;
             goto fail;
         }
+		else {
+			for(i = 0; i < ic->nb_streams; i++) {
+				AVStream * st = ic->streams[i];
+				if(st != NULL) {
+					if(st->codecpar->codec_type == AVMEDIA_TYPE_VIDEO)
+					av_log(NULL, AV_LOG_INFO, "AVMEDIA_TYPE_VIDEO[%d] codec_id=%d, profile=%d, level=%d, width=%d, height=%d", st->codecpar->codec_id, st->codecpar->profile, st->codecpar->level, st->codecpar->width, st->codecpar->height);
+				}
+			}
+		}
     }
     if (ic->pb)
         ic->pb->eof_reached = 0; // FIXME hack, ffplay maybe should not use avio_feof() to test for the end
