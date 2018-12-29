@@ -3245,6 +3245,7 @@ static int read_thread(void *arg)
                 if (first_h264_stream < 0)
                     first_h264_stream = i;
             }
+			av_log(NULL, AV_LOG_ERROR,"");
         }
     }
     if (video_stream_count > 1 && st_index[AVMEDIA_TYPE_VIDEO] < 0) {
