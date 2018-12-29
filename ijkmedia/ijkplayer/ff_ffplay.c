@@ -2968,6 +2968,7 @@ static int stream_component_open(FFPlayer *ffp, int stream_index)
                 goto fail;
         }
 		AVStream * st = is->video_st;
+		av_log(NULL, AV_LOG_ERROR,"avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
 		if(st->avg_frame_rate.num <= 0 || st->avg_frame_rate.den <= 0) {
 			st->avg_frame_rate.num = 25;
 			st->avg_frame_rate.den = 1;
@@ -3257,7 +3258,7 @@ static int read_thread(void *arg)
             }
         }
     }
-
+	av_log(NULL, AV_LOG_ERROR,"*** avg_frame_rate(%d/%d), r_frame_rate(%d/%d) ", st->avg_frame_rate.num, st->avg_frame_rate.den, st->r_frame_rate.num, st->r_frame_rate.den);
 	for(i = 0; i < ic->nb_streams; i++) {
 		AVStream * st = ic->streams[i];
 		if(st == NULL) 
