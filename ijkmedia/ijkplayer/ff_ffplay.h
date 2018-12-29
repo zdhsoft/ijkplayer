@@ -117,8 +117,9 @@ void      ffp_set_property_int64(FFPlayer *ffp, int id, int64_t value);
 
 // must be freed with free();
 struct IjkMediaMeta *ffp_get_meta_l(FFPlayer *ffp);
-void dsv_reset_fps(AVStream * st);
-int calc_fps(AVRational * r);
+
+static void dsv_reset_fps(AVStream * st);
+static int calc_fps(AVRational * r);
 
 
 
