@@ -3189,7 +3189,7 @@ static int read_thread(void *arg)
                     break;
                 }
             }
-            err = avformat_find_stream_info(ic, opts);
+            //err = avformat_find_stream_info(ic, opts);
         } while(0);
         ffp_notify_msg1(ffp, FFP_MSG_FIND_STREAM_INFO);
 
