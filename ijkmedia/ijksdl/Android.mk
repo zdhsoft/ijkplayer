@@ -72,8 +72,7 @@ LOCAL_SRC_FILES += android/ijksdl_vout_android_nativewindow.c
 LOCAL_SRC_FILES += android/ijksdl_vout_android_surface.c
 LOCAL_SRC_FILES += android/ijksdl_vout_overlay_android_mediacodec.c
 
-LOCAL_STATIC_LIBRARIES := cpufeatures yuv_static
-LOCAL_STATIC_LIBRARIES := avformat avcodec swscale swresample avfilter avutil cpufeatures 
+LOCAL_STATIC_LIBRARIES := avformat avcodec swscale swresample avfilter avutil cpufeatures yuv_static
 LOCAL_SHARED_LIBRARIES := ijkj4a
 
 LOCAL_MODULE := ijksdl
